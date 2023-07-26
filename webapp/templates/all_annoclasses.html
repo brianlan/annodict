@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %} 4D标注字典-大类别 {% endblock %}
+{% block page_header %} 4D标注字典-大类别 {% endblock %}
+
+{% block content %}
+<!-- <button class="button-primary" id="toggle-button">Show/Hide Content</button>
+<div class="toggle-content" id="toggle-content" style="display: none;">
+    <table class="u-full-width">
+      <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Movable</th>
+      </tr>
+      <tr v-for="annoclass in annoclasses" :key="annoclass._id" >
+          <td>annoclass.name</td>
+          <td>annoclass.desc</td>
+          <td>annoclass.movable</td>
+      </tr>
+  </table>
+  </div> -->
+
+<div class="twelve columns">
+    <div id="all_annoclass_table">
+        <div v-for="(annoclasses, category) in categories" :key="category" >
+            <h4>{{ '{{category}}' }}</h4>
+            <!-- <button class="button-primary" id="toggle-button" v-on="">{{ '{{category}}' }}</button> -->
+            <!-- <div class="toggle-content" id="toggle-content" style="display: none;"> -->
+
+                <table class="u-full-width">
+                    <tr>
+                        <!-- <th>Name</th> -->
+                        <th>类别</th>
+                        <th>可移动</th>
+                        <th>属性</th>
+                    </tr>
+                    <tr v-for="annoclass in annoclasses" :key="annoclass._id" >
+                        <!-- <td>{{ '{{annoclass.name}}' }}</td> -->
+                        <td>{{ '{{annoclass.name_zh}}' }}</td>
+                        <td>{{ '{{annoclass.movable}}' }}</td>
+                        <td>
+                            <div v-for="attr in annoclass.attributes" :key="attr.name">
+                                <table>
+                                    <tr><th>{{ '{{attr.name_zh}}' }}</th><th></th></tr>
+                                    <tr v-for="attritem in attr.items" :key="attritem.name">
+                                        <td>
+                                            {{ '{{attritem.name_zh}}' }}
+                                        </td>
+                                        <td>
+                                            <img v-for="img_path in attritem.example_img_paths" :key="img_path" :src="img_path" width="60">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+            <!-- </div> -->
+
+            <br>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js_reference %}
+<script src="{{ url_for('static', filename='js/all_annoclasses.js') }}"></script>
+
+<!-- <script>
+    // Select button element and content element by ids
+    var button = $("#toggle-button");
+    var content = $("#toggle-content");
+    // Add click event listener to button element
+    button.on("click", function() {
+    // Check if content element is visible or not
+    if (content.is(":visible")) {
+        // If visible, hide it
+        content.slideToggle();
+    } else {
+        // If not visible, show it
+        content.slideToggle();
+    }
+    });
+</script> -->
+
+{% endblock %}
+

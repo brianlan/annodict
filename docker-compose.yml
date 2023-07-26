@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  web:
+    build: webapp
+    ports:
+      - 5100:5000
+    volumes:
+      - .:/code  # mount source folder to docker container to enable service instant change if there's code change
+      - logvolume01:/var/log
+    depends_on:
+      - mongodb
+    networks:
+      - default
+
+  mongodb:
+    image: mongo:4.4.23
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodbvolume01:/data/db
+    networks:
+      - default
+
+networks:
+  default:
+
+volumes:
+  logvolume01:
+  mongodbvolume01:
