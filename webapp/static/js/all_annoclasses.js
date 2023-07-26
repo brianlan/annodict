@@ -2,6 +2,13 @@ let all_annoclass_table = new Vue({
     el: '#all_annoclass_table',
     data: {
         categories: {},
+        show: {
+            'attr.animal.animal.type': false,
+        },
+        flags: {
+            'ok': false,
+            'attr.animal.animal.type': false,
+        },
     },
     mounted: function () {
         let self = this;
@@ -12,16 +19,28 @@ let all_annoclass_table = new Vue({
                     if (!acc[x.category]) {
                       acc[x.category] = [];
                     }
+
                     // Push the annoclass to the corresponding category array
                     acc[x.category].push(x);
                     // Return the updated accumulator object
                     return acc;
                 }, {});
+
+                response.data._items.map(function (x) {
+                    for (let i in x.attributes) {
+                        self.$set(self.show, x.attributes[i].name, false);
+                    }
+                });
             })
             .catch(function (error) {
                 alert(JSON.stringify(error));
             });
     },
+    methods: {
+        toggle_attr: function (attr_name) {
+            this.$set(this.show, attr_name, !this.show[attr_name])
+        }
+    }
     // methods: {
     //     delete_job: function (idx) {
     //         let self = this;

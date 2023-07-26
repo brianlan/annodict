@@ -24,6 +24,10 @@ def all_categories():
 def demo_toggle():
     return render_template('demo_toggle.html')
 
+@app.route("/demo_toggle2", methods=["GET"])
+def demo_toggle2():
+    return render_template('demo_toggle2.html')
+
 
 @app.route("/create_job", methods=["GET"])
 def create_job():
