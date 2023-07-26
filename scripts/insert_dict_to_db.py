@@ -58,8 +58,8 @@ def insert_attrs(annoattrs: pd.DataFrame, api_server: str):
 def prepare_attritems(attr_name, attr_type, items):
     if attr_type == "enum":
         return [
-            {"name": i[0], "name_zh": i[1]}
-            for i in items[["attr_value", "attr_desc"]].values.tolist()
+            {"name": i[0], "name_zh": i[1], "example_img_paths": [] if pd.isnull(i[2]) else i[2].split(",")}
+            for i in items[["attr_value", "attr_desc", "example_img_paths"]].values.tolist()
         ]
 
     elif attr_type == "bool":
@@ -79,11 +79,12 @@ def insert_classes(annoclasses: pd.DataFrame, name2attr: dict, api_server: str):
     """
     for name, annoclass in annoclasses.groupby("class_value"):
         assert annoclass.class_desc.nunique() == 1
-        name_zh, category, movable = annoclass[
-            ["class_desc", "category", "movable"]
+        name_zh, category, movable, example_img_paths_str = annoclass[
+            ["class_desc", "category", "movable", "example_img_paths"]
         ].values[0]
 
         attr_objids = []
+        example_img_paths = []
         if not annoclass.attr.isnull().all():
             # iterate all the attr values and find the corresponding _id in name2attr using comprehension exp
             # then set the result to attr_objids
@@ -92,6 +93,9 @@ def insert_classes(annoclasses: pd.DataFrame, name2attr: dict, api_server: str):
                 for attr_name in annoclass.attr.values
                 if attr_name in name2attr
             ]
+        
+        if not annoclass.example_img_paths.isnull().all():
+            example_img_paths = example_img_paths_str.split(",")
 
         class_objid = post_docs(
             "annoclass",
@@ -102,6 +106,7 @@ def insert_classes(annoclasses: pd.DataFrame, name2attr: dict, api_server: str):
                     "category": category,
                     "attributes": attr_objids,
                     "movable": movable,
+                    "example_img_paths": example_img_paths,
                 }
             ],
             api_server,

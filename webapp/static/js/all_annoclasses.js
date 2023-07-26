@@ -2,13 +2,7 @@ let all_annoclass_table = new Vue({
     el: '#all_annoclass_table',
     data: {
         categories: {},
-        show: {
-            'attr.animal.animal.type': false,
-        },
-        flags: {
-            'ok': false,
-            'attr.animal.animal.type': false,
-        },
+        show: {},
     },
     mounted: function () {
         let self = this;
@@ -28,7 +22,7 @@ let all_annoclass_table = new Vue({
 
                 response.data._items.map(function (x) {
                     for (let i in x.attributes) {
-                        self.$set(self.show, x.attributes[i].name, false);
+                        self.$set(self.show, x.name + "-" + x.attributes[i].name, false);
                     }
                 });
             })
@@ -37,8 +31,11 @@ let all_annoclass_table = new Vue({
             });
     },
     methods: {
-        toggle_attr: function (attr_name) {
-            this.$set(this.show, attr_name, !this.show[attr_name])
+        toggle_attr: function (annoclass_name, attr_name) {
+            this.$set(this.show, annoclass_name + "-" + attr_name, !this.show[annoclass_name + "-" + attr_name])
+        },
+        toggle_state: function (annoclass_name, attr_name) {
+            return this.show[annoclass_name + "-" + attr_name];
         }
     }
     // methods: {
