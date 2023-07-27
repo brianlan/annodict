@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+</head>
+<body>
+
+<div class="content">
+    <div class="container">
+        <div class="row" style="margin-top: 5%">
+            <h3>{{ annoscene.name }}</h3>
+            <h5>{{ annoscene.desc }}</h5>
+        </div>
+        <div class="row">
+            <table class="u-full-width">
+                <tr>
+                    <th>类别</th>
+                    <th>可移动</th>
+                    <th>示例图片</th>
+                    <th>属性</th>
+                </tr>
+                {% for annoclass in annoscene.classes %}
+                
+                <tr>
+                    <td>{{annoclass.name_zh}}</td>
+                    <td>{{annoclass.movable}}</td>
+                    <td>
+                        {% for img_path in annoclass.example_img_paths %}
+                        <img src="{{img_path}}" width="60">
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for attr in annoclass.attributes %}
+                        <table>
+                            <tr>
+                                <th>{{attr.name_zh}}</th>
+                                <th></th>
+                            </tr>
+                            {% for attritem in attr.items %}
+                            <tr>
+                                <td>
+                                    {{attritem.name_zh}}
+                                </td>
+                                <td>
+                                    {% for img_path in attritem.example_img_paths %}
+                                    <img src="{{img_path}}" width="60">
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                        {% endfor %}
+                        </div>
+                    </td>
+                </tr>
+
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
