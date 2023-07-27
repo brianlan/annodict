@@ -176,30 +176,3 @@ class AnnoScene:
                 merged.drop(columns=['name_zh'], inplace=True)
                 out.append(merged)
         pd.concat(out, ignore_index=True).to_csv(path, encoding='utf_8_sig', index=False)
-
-    # def export_csv2(self, path: Path) -> pd.DataFrame:
-    #     _classes = pd.DataFrame(
-    #         {
-    #             "标注场景": self.name,
-    #             "简介": self.desc,
-    #             "所属": [cls.category for cls in self.classes],
-    #             "大类名称": [cls.name_zh for cls in self.classes],
-    #             "可移动": [cls.movable for cls in self.classes],
-    #             "attributes": [cls.attributes for cls in self.classes],
-    #         }
-    #     )
-    #     _attrs = _classes.explode("attributes")
-    #     _attrs.loc[:, "items"] = _attrs.attributes.map(
-    #         lambda x: np.nan if pd.isnull(x) else x.items
-    #     )
-    #     _items = _attrs.explode("items")
-    #     _items.loc[:, "小类名称"] = _items["items"].map(
-    #         lambda x: np.nan if pd.isnull(x) else x.name_zh
-    #     )
-    #     _items.loc[:, "示例图片"] = _items["items"].map(
-    #         lambda x: np.nan
-    #         if pd.isnull(x) or len(x.example_img_paths) == 0
-    #         else "|".join(x.example_img_paths)
-    #     )
-    #     _items.drop(columns=["attributes", "items"], inplace=True)
-    #     _items.to_csv(path, encoding='utf_8_sig', index=False)

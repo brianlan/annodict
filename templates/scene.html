@@ -16,15 +16,17 @@
             <table class="u-full-width">
                 <tr>
                     <th>类别</th>
-                    <th>可移动</th>
                     <th>示例图片</th>
                     <th>属性</th>
                 </tr>
                 {% for annoclass in annoscene.classes %}
                 
                 <tr>
-                    <td>{{annoclass.name_zh}}</td>
-                    <td>{{annoclass.movable}}</td>
+                    <td>
+                        {{annoclass.name_zh}}
+                        <br>
+                        <font size="2">{{annoclass.name}}</font>
+                    </td>
                     <td>
                         {% for img_path in annoclass.example_img_paths %}
                         <img src="{{img_path}}" width="60">
@@ -41,6 +43,8 @@
                             <tr>
                                 <td>
                                     {{attritem.name_zh}}
+                                    <br>
+                                    <font size="2">{{attritem.name}}</font>
                                 </td>
                                 <td>
                                     {% for img_path in attritem.example_img_paths %}
