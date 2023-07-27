@@ -1,7 +1,6 @@
 import argparse
 from pathlib import Path
 
-import pandas as pd
 from loguru import logger
 
 from annodict.resource import AnnoScene
@@ -15,9 +14,18 @@ parser.add_argument("--api-server", default="http://localhost:5100")
 
 
 def main(args):
+    logger.info(f"Start loading scene {args.scene_id} from {args.api_server}")
     scene = AnnoScene.from_objectid(args.scene_id, args.api_server)
-    with open(args.output_path, "w") as f:
-        f.write(scene.export_html())
+    logger.info(f"Scene {args.scene_id} loaded")
+
+    if args.output_path.suffix == ".csv":
+        scene.export_csv(args.output_path)
+    elif args.output_path.suffix == ".html":
+        scene.export_html(args.output_path)
+    else:
+        raise ValueError(f"Unknown output format: {args.output_path.suffix}")
+
+    logger.info(f"Exported scene {args.scene_id} to {args.output_path}")
 
 
 if __name__ == "__main__":

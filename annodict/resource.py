@@ -1,9 +1,10 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from pathlib import Path
 
 from jinja2 import Template
 import requests
 import pandas as pd
+import numpy as np
 
 
 @dataclass
@@ -112,13 +113,93 @@ class AnnoScene:
             ],
         )
 
-    def export_html(self) -> str:
+    def export_html(self, path: Path) -> str:
         """Export as html string"""
         template = Template(Path("templates/scene.html").read_text())
-        return template.render(
-            annoscene=self,
-        )
+        html = template.render(annoscene=self)
+        with open(path, "w") as f:
+            f.write(html)
 
-    def export_csv(self) -> pd.DataFrame:
-        """Export as csv"""
-        pass
+    def export_csv(self, path: Path) -> pd.DataFrame:
+        """Export as csv
+        -----------------
+        check the number of attributes for each class,
+        obtain the Cartesian product of the items of each attribute
+        """
+        out = []
+        for cls in self.classes:
+            if len(cls.attributes) == 0:
+                out.append(
+                    pd.DataFrame(
+                        {
+                            "标注场景": [self.name,],
+                            "简介": [self.desc,],
+                            "所属": [cls.category,],
+                            "大类名称": [cls.name_zh,],
+                            "小类名称": [cls.name_zh],
+                            "可移动": [cls.movable,],
+                        }
+                    )
+                )
+            elif len(cls.attributes) == 1:
+                attr = cls.attributes[0]
+                _tmp = pd.DataFrame(
+                        {
+                            "标注场景": self.name,
+                            "简介": self.desc,
+                            "所属": cls.category,
+                            "大类名称": cls.name_zh,
+                            "可移动": cls.movable,
+                            "items": attr.items,
+                        }
+                    ).explode("items")
+                _tmp.loc[:, "小类名称"] = _tmp["items"].map(lambda x: f"{attr.name_zh}({x.name_zh})" if attr.attr_type == 'bool' else x.name_zh)
+                _tmp.drop(columns=['items'], inplace=True)
+                out.append(_tmp)
+            else:
+                merged = pd.DataFrame.from_dict([asdict(item) for item in cls.attributes[0].items])
+                if cls.attributes[0].attr_type == 'bool':
+                    cur.loc[:, "name_zh"] = cls.attributes[0].name_zh + '(' + cur.name_zh + ')'
+                for i in range(1, len(cls.attributes)):
+                    cur = pd.DataFrame.from_dict([asdict(item) for item in cls.attributes[i].items])
+                    if cls.attributes[i].attr_type == 'bool':
+                        cur.loc[:, "name_zh"] = cls.attributes[i].name_zh + '(' + cur.name_zh + ')'
+                    merged = pd.merge(merged[['name_zh']], cur[['name_zh']], how='cross')
+                    merged['name_zh'] = merged['name_zh_x'] + '-' + merged['name_zh_y']
+                    merged.drop(columns=['name_zh_x', 'name_zh_y'], inplace=True)
+                merged.loc[:, "标注场景"] = self.name
+                merged.loc[:, "简介"] = self.desc
+                merged.loc[:, "所属"] = cls.category
+                merged.loc[:, "大类名称"] = cls.name_zh
+                merged.loc[:, "小类名称"] = merged.name_zh
+                merged.loc[:, "可移动"] = cls.movable
+                merged.drop(columns=['name_zh'], inplace=True)
+                out.append(merged)
+        pd.concat(out, ignore_index=True).to_csv(path, encoding='utf_8_sig', index=False)
+
+    # def export_csv2(self, path: Path) -> pd.DataFrame:
+    #     _classes = pd.DataFrame(
+    #         {
+    #             "标注场景": self.name,
+    #             "简介": self.desc,
+    #             "所属": [cls.category for cls in self.classes],
+    #             "大类名称": [cls.name_zh for cls in self.classes],
+    #             "可移动": [cls.movable for cls in self.classes],
+    #             "attributes": [cls.attributes for cls in self.classes],
+    #         }
+    #     )
+    #     _attrs = _classes.explode("attributes")
+    #     _attrs.loc[:, "items"] = _attrs.attributes.map(
+    #         lambda x: np.nan if pd.isnull(x) else x.items
+    #     )
+    #     _items = _attrs.explode("items")
+    #     _items.loc[:, "小类名称"] = _items["items"].map(
+    #         lambda x: np.nan if pd.isnull(x) else x.name_zh
+    #     )
+    #     _items.loc[:, "示例图片"] = _items["items"].map(
+    #         lambda x: np.nan
+    #         if pd.isnull(x) or len(x.example_img_paths) == 0
+    #         else "|".join(x.example_img_paths)
+    #     )
+    #     _items.drop(columns=["attributes", "items"], inplace=True)
+    #     _items.to_csv(path, encoding='utf_8_sig', index=False)
