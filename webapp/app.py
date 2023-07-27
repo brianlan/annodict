@@ -15,23 +15,14 @@ def all_annoclasses():
     return render_template('all_annoclasses.html')
 
 
-@app.route("/all_categories", methods=["GET"])
-def all_categories():
-    return render_template('all_categories.html')
+@app.route("/all_annoscenes", methods=["GET"])
+def all_annoscenes():
+    return render_template('all_annoscenes.html')
 
 
-@app.route("/demo_toggle", methods=["GET"])
-def demo_toggle():
-    return render_template('demo_toggle.html')
-
-@app.route("/demo_toggle2", methods=["GET"])
-def demo_toggle2():
-    return render_template('demo_toggle2.html')
-
-
-@app.route("/create_job", methods=["GET"])
-def create_job():
-    return render_template('job_detail.html')
+@app.route("/annoscene_detail/<annoscene_id>", methods=["GET"])
+def annoscene_detail(annoscene_id):
+    return render_template('annoscene_detail.html')
 
 
 # @app.route("/enqueue_job", methods=["POST"])

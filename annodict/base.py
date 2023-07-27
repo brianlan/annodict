@@ -1,13 +1,22 @@
 from dataclasses import dataclass, field
 
 @dataclass
+class AnnoItem:
+    """Attribute Item
+    """
+    name: str
+    name_zh: str
+    example_img_paths: list[str] = field(default_factory=list)
+
+
+@dataclass
 class AnnoAttr:
     """Attribute
     """
     name: str
+    name_zh: str
     attr_type: str
-    values: list[str]
-    descs: list[str]
+    items: list[AnnoItem] = field(default_factory=list)
 
 
 @dataclass
@@ -24,11 +33,11 @@ class AnnoClass:
     """Class
     """
     name: str
+    name_zh: str
     category: str
-    desc: str
     movable: bool
     attributes: list[AnnoAttr] = field(default_factory=list)
-    parts: list[AnnoAffi] = field(default_factory=list)
+    example_img_paths: list[str] = field(default_factory=list)
 
 
 @dataclass

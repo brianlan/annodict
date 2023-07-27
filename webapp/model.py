@@ -1,3 +1,24 @@
+annoscene = {
+    "item_title": "annoscene",
+    "resource_methods": ["GET", "POST", "DELETE"],
+    "item_methods": ["GET", "PATCH", "PUT", "DELETE"],
+    "schema": {
+        "name": {"type": "string", "required": True},
+        "desc": {"type": "string"},
+        "classes": {
+            "type": "list",
+            "schema": {
+                "type": "objectid",
+                "data_relation": {
+                    "resource": "annoclass",
+                    "field": "_id",
+                    "embeddable": True,
+                },
+            },
+        },
+    },
+}
+
 annoclass = {
     "item_title": "annoclass",
     "resource_methods": ["GET", "POST", "DELETE"],

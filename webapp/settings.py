@@ -1,4 +1,4 @@
-from model import annoattr, annoclass
+from model import annoattr, annoclass, annoscene
 
 
 # Let's just use the local mongod instance. Edit as needed.
@@ -33,4 +33,5 @@ PAGINATION_LIMIT = 1000
 DOMAIN = {
     'annoclass': annoclass,
     'annoattr': annoattr,
+    'annoscene': annoscene,
 }

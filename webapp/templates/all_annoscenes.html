@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %} 4D标注字典 {% endblock %}
+{% block page_header %} 4D标注字典-标注场景 {% endblock %}
+
+{% block content %}
+<div class="twelve columns">
+    <div id="all_annoscene_table">
+            <table class="u-full-width">
+                <tr>
+                    <th>标注场景名称</th>
+                    <th>大类数目</th>
+                    <th>创建时间</th>
+                </tr>
+                <tr v-for="scene in scenes" :key="scene.id" >
+                    <td><a :href="'/annoscene_detail/'+scene.id">{{ '{{scene.name}}' }}</a></td>
+                    <td>{{ '{{scene.num_classes}}' }}</td>
+                    <td>{{ '{{scene.created_ts}}' }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js_reference %}
+<script src="{{ url_for('static', filename='js/all_annoscenes.js') }}"></script>
+
+{% endblock %}
+
