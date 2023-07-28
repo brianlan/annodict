@@ -79,8 +79,8 @@ def insert_classes(annoclasses: pd.DataFrame, name2attr: dict, api_server: str):
     """
     for name, annoclass in annoclasses.groupby("class_value"):
         assert annoclass.class_desc.nunique() == 1
-        name_zh, category, movable, example_img_paths_str = annoclass[
-            ["class_desc", "category", "movable", "example_img_paths"]
+        name_zh, category, time_varying, example_img_paths_str = annoclass[
+            ["class_desc", "category", "time_varying", "example_img_paths"]
         ].values[0]
 
         attr_objids = []
@@ -105,7 +105,7 @@ def insert_classes(annoclasses: pd.DataFrame, name2attr: dict, api_server: str):
                     "name_zh": name_zh,
                     "category": category,
                     "attributes": attr_objids,
-                    "movable": movable,
+                    "time_varying": time_varying,
                     "example_img_paths": example_img_paths,
                 }
             ],

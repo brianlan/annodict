@@ -1,7 +1,10 @@
 let annoscene_detail_table = new Vue({
     el: '#annoscene_detail_table',
     data: {
-        scene: undefined,
+        scene: {
+            "name": "not populated",
+            "desc": "not populated",
+        },
         full_class_info: {},
         show: {},
     },
@@ -17,13 +20,9 @@ let annoscene_detail_table = new Vue({
                     axios.get('/annoclass/'+annoclass_id+'?embedded={"attributes":1}')
                         .then(function (response) {
                             self.$set(self.full_class_info, annoclass_id, response.data);
-                            // self.full_class_info[annoclass_id] = response.data;
 
                             response.data.attributes.map(function (attr) {
                                 self.$set(self.show, self.full_class_info[annoclass_id].name + "-" + attr.name, false);
-                                // for (let i in x.attributes) {
-                                //     self.$set(self.show, x.name + "-" + x.attributes[i].name, false);
-                                // }
                             });
                         })
                         .catch(function (error) {

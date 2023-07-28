@@ -52,7 +52,7 @@ class AnnoClass:
     name: str
     name_zh: str
     category: str
-    movable: bool
+    time_varying: bool
     attributes: list[AnnoAttr] = field(default_factory=list)
     example_img_paths: list[str] = field(default_factory=list)
 
@@ -63,7 +63,7 @@ class AnnoClass:
             name=d["name"],
             name_zh=d["name_zh"],
             category=d["category"],
-            movable=d["movable"],
+            time_varying=d["time_varying"],
             attributes=[AnnoAttr.from_dict(a) for a in d["attributes"]],
             example_img_paths=d.get("example_img_paths", []),
         )
@@ -137,7 +137,7 @@ class AnnoScene:
                             "所属": [cls.category,],
                             "大类名称": [cls.name_zh,],
                             "小类名称": [cls.name_zh],
-                            "可移动": [cls.movable,],
+                            "随时间可变": [cls.time_varying,],
                         }
                     )
                 )
@@ -149,7 +149,7 @@ class AnnoScene:
                             "简介": self.desc,
                             "所属": cls.category,
                             "大类名称": cls.name_zh,
-                            "可移动": cls.movable,
+                            "随时间可变": cls.time_varying,
                             "items": attr.items,
                         }
                     ).explode("items")
@@ -172,7 +172,7 @@ class AnnoScene:
                 merged.loc[:, "所属"] = cls.category
                 merged.loc[:, "大类名称"] = cls.name_zh
                 merged.loc[:, "小类名称"] = merged.name_zh
-                merged.loc[:, "可移动"] = cls.movable
+                merged.loc[:, "随时间可变"] = cls.time_varying
                 merged.drop(columns=['name_zh'], inplace=True)
                 out.append(merged)
         pd.concat(out, ignore_index=True).to_csv(path, encoding='utf_8_sig', index=False)

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %} 4D标注字典 {% endblock %}
+{% block page_header %} 4D标注字典-创建标注场景 {% endblock %}
+
+{% block content %}
+<div class="twelve columns">
+    <div id="new_annoscene">
+        <div class="row">
+            <div class="three columns">
+                <label for="scene_name">场景名称</label>
+                <input class="u-full-width" type="text" placeholder="给这个标注场景取个名字" id="scene_name" v-model="scene_name">
+            </div>
+            <div class="nine columns">
+                <label for="scene_desc">场景简介</label>
+                <input class="u-full-width" type="text" placeholder="可以描述一下创建这个场景的背景和目标用途" id="scene_desc" v-model="scene_desc">
+            </div>
+        </div>
+        <div class="row">
+            <label for="scene_name">已选择类别</label>
+            <p v-show="selected_classes.length == 0">无</p>
+        </div>
+        <table v-show="selected_classes.length > 0">
+            <tr>
+                <th>所属</th>
+                <th>类别</th>
+                <th>随时间可变</th>
+                <th>示例图片</th>
+                <th>属性</th>
+            </tr>
+            <tr v-for="selected_class in selected_classes">
+                <td>{{ '{{selected_class.category}}' }}</td>
+                <td>{{ '{{selected_class.name_zh}}' }}</td>
+                <td>{{ '{{selected_class.time_varying}}' }}</td>
+                <td>
+                    <img v-for="img_path in selected_class.example_img_paths" :key="img_path" :src="img_path" width="60">
+                </td>
+                <td>
+                    <div v-for="attr in selected_class.attributes" :key="attr.name">
+                        <button class="button" @click="toggle_attr(selected_class.name, attr.name)">{{ '{{attr.name_zh}}' }}</button>
+                        <table v-show="toggle_state(selected_class.name, attr.name)">
+                            <tr v-for="attritem in attr.items" :key="attritem.name">
+                                <td>
+                                    {{ '{{attritem.name_zh}}' }}
+                                </td>
+                                <td>
+                                    <img v-for="img_path in attritem.example_img_paths" :key="img_path" :src="img_path" width="60">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <hr>
+        <div class="row">
+            <select v-model="cur_category">
+                <option v-for="category in Object.keys(categories)" :value="category">{{'{{category}}'}}</option>
+            </select>
+            <select v-model="cur_idx_in_category">
+                <option v-for="cls, idx in categories[cur_category]" :value="idx">{{'{{cls.name_zh}}'}}</option>
+            </select>
+            <input class="button-primary" value="增加标注类别" type="button" @click="add_class">
+        </div>
+        <hr>
+        <div class="row">
+            <input class="button-primary" type="button" value="创建场景" @click="create_scene">
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js_reference %}
+<script src="{{ url_for('static', filename='js/create_annoscene.js') }}"></script>
+
+{% endblock %}
+

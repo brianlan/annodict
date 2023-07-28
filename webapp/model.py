@@ -7,6 +7,7 @@ annoscene = {
         "desc": {"type": "string"},
         "classes": {
             "type": "list",
+            "required": True,
             "schema": {
                 "type": "objectid",
                 "data_relation": {
@@ -27,7 +28,7 @@ annoclass = {
         "name": {"type": "string", "required": True},
         "category": {"type": "string", "required": True},
         "name_zh": {"type": "string", "required": True},
-        "movable": {"type": "boolean", "required": True},
+        "time_varying": {"type": "boolean", "required": True},
         "attributes": {
             "type": "list",
             "schema": {

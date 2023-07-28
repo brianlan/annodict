@@ -25,6 +25,11 @@ def annoscene_detail(annoscene_id):
     return render_template('annoscene_detail.html')
 
 
+@app.route("/create_annoscene", methods=["GET"])
+def create_annoscene():
+    return render_template('create_annoscene.html')
+
+
 # @app.route("/enqueue_job", methods=["POST"])
 # def enqueue_job():
 #     job = request.get_data()

@@ -10,13 +10,13 @@
                 <table class="u-full-width">
                     <tr>
                         <th>类别</th>
-                        <th>可移动</th>
+                        <th>随时间可变</th>
                         <th>示例图片</th>
                         <th>属性</th>
                     </tr>
                     <tr v-for="annoclass in annoclasses" :key="annoclass._id" >
                         <td>{{ '{{annoclass.name_zh}}' }}</td>
-                        <td>{{ '{{annoclass.movable}}' }}</td>
+                        <td>{{ '{{annoclass.time_varying}}' }}</td>
                         <td>
                             <img v-for="img_path in annoclass.example_img_paths" :key="img_path" :src="img_path" width="60">
                         </td>

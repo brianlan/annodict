@@ -9,7 +9,7 @@ let all_annoscene_table = new Vue({
             .then(function (response) {
                 self.scenes = response.data._items.map(function (x) {
                     return {
-                        id: x._id,
+                        _id: x._id,
                         name: x.name,
                         num_classes: x.classes.length,
                         created_ts: x._created,
@@ -21,12 +21,19 @@ let all_annoscene_table = new Vue({
                 alert(JSON.stringify(error));
             });
     },
-    // methods: {
-    //     toggle_attr: function (annoclass_name, attr_name) {
-    //         this.$set(this.show, annoclass_name + "-" + attr_name, !this.show[annoclass_name + "-" + attr_name])
-    //     },
-    //     toggle_state: function (annoclass_name, attr_name) {
-    //         return this.show[annoclass_name + "-" + attr_name];
-    //     }
-    // }
+    methods: {
+        delete_scene: function (scene_idx) {
+            let self = this;
+            let scene_id = self.scenes[scene_idx]._id;
+            axios.delete('/annoscene/'+scene_id)
+                .then(function (response) {
+                    console.log("Scene " + scene_id + " has been deleted.")
+                })
+                .catch(function (error) {
+                    alert(JSON.stringify(error));
+                });
+            
+            self.scenes.splice(scene_idx, 1);
+        },
+    }
 });
