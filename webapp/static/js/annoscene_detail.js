@@ -5,7 +5,7 @@ let annoscene_detail_table = new Vue({
             "name": "not populated",
             "desc": "not populated",
         },
-        full_class_info: {},
+        class_array: [],
         show: {},
     },
     mounted: function () {
@@ -19,10 +19,10 @@ let annoscene_detail_table = new Vue({
                 self.scene.classes.map(function (annoclass_id) {
                     axios.get('/annoclass/'+annoclass_id+'?embedded={"attributes":1}')
                         .then(function (response) {
-                            self.$set(self.full_class_info, annoclass_id, response.data);
+                            self.class_array.push(response.data);
 
                             response.data.attributes.map(function (attr) {
-                                self.$set(self.show, self.full_class_info[annoclass_id].name + "-" + attr.name, false);
+                                self.$set(self.show, response.data.name + "-" + attr.name, false);
                             });
                         })
                         .catch(function (error) {
@@ -35,13 +35,16 @@ let annoscene_detail_table = new Vue({
             });
     },
     computed: {
-        sorted_full_class_info: function () {
-            return Object.keys(this.full_class_info)
-                .sort()
-                .reduce((accumulator, key) => {
-                    accumulator[key] = this.full_class_info[key];
-                    return accumulator;
-                }, {});
+        sorted_class_array: function () {
+            return this.class_array.sort((a, b) => {
+                if(a.category < b.category) {
+                    return -1;
+                }
+                if(a.category > b.category) {
+                    return 1;
+                }
+                return 0;
+            });
         }
     },
     methods: {

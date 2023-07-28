@@ -30,6 +30,11 @@ def create_annoscene():
     return render_template('create_annoscene.html')
 
 
+@app.route("/component_demo", methods=["GET"])
+def component_demo():
+    return render_template('component_demo.html')
+
+
 # @app.route("/enqueue_job", methods=["POST"])
 # def enqueue_job():
 #     job = request.get_data()

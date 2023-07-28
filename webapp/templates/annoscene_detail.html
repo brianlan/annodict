@@ -16,7 +16,7 @@
                 <th>示例图片</th>
                 <th>属性</th>
             </tr>
-            <tr v-for="(annoclass, annoclass_id) in sorted_full_class_info" :key="annoclass_id" >
+            <tr v-for="(annoclass, annoclass_id) in sorted_class_array" :key="annoclass_id" >
                 <td>{{ '{{annoclass.category}}' }}</td>
                 <td>{{ '{{annoclass.name_zh}}' }}</td>
                 <td>{{ '{{annoclass.time_varying}}' }}</td>
