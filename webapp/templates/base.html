@@ -8,6 +8,7 @@
     <link href="{{ url_for('static', filename='css/raleway_font.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/skeleton.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"> -->
     
     {% block extra_css_reference %} {% endblock %}
@@ -17,6 +18,27 @@
 
 <div class="content">
     <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a class="navbar-link" href="/all_annoclasses">字典</a></li>
+                    <li class="navbar-item">
+                        <a class="navbar-link" href="#" data-popover="#codeNavPopover">场景</a>
+                        <div id="codeNavPopover" class="popover">
+                        <ul class="popover-list">
+                            <li class="popover-item">
+                            <a class="popover-link" href="/all_annoscenes">所有场景</a>
+                            </li>
+                            <li class="popover-item">
+                            <a class="popover-link" href="/create_annoscene">创建场景</a>
+                            </li>
+                        </ul>
+                        </div>
+                    </li>
+                    </ul>
+            </div>
+          </nav>
+
         <div class="row" style="margin-top: 5%">
             <h3>{% block page_header %} {% endblock %}</h3>
         </div>
@@ -30,5 +52,6 @@
 <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/2.6.14/vue.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/axios/0.26.0/axios.js"></script>
+<script src="{{ url_for('static', filename='js/site.js') }}"></script>
 {% block extra_js_reference %} {% endblock %}
 </html>
