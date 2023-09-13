@@ -46,6 +46,13 @@ let new_annoscene = new Vue({
             let self = this;
             self.selected_classes.push(self.categories[self.cur_category][self.cur_idx_in_category]);
         },
+        remove_class: function (annoclass_id) {
+            let self = this;
+            let index = self.selected_classes.findIndex(item => item._id === annoclass_id);
+                if (index !== -1) {
+                self.selected_classes.splice(index, 1);
+            }
+        },
         create_scene: function () {
             let self = this;
 
