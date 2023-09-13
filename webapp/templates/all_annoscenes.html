@@ -17,7 +17,8 @@
                     <td>{{ '{{scene.num_classes}}' }}</td>
                     <td>{{ '{{scene.created_ts}}' }}</td>
                     <td>
-                        <input class="button" value="删除" type="button" @click="delete_scene(idx)">
+                        <a href="#" style="text-decoration: none" @click="delete_scene(idx)">✖️</a>
+                        <!-- <a class="button" value="删除" type="button" @click="delete_scene(idx)"> -->
                     </td>
                 </tr>
             </table>
