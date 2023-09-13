@@ -17,6 +17,21 @@ annoscene = {
                 },
             },
         },
+        # TODO: the number of attrs of a class in a scene could vary from the 
+        #       number of attrs of the same class in another scene or the original dict
+        
+        # "selected_attritems": {
+        #     "type": "dict",
+        #     "schema": {
+        #         "class_id": "objectid",
+        #         "selected_attr": {
+        #             "type": "list",
+        #             "schema": {
+                        
+        #             }
+        #         }
+        #     }
+        # }
     },
 }
 
@@ -59,19 +74,30 @@ annoattr = {
         "items": {
             "type": "list",
             "schema": {
-                "type": "dict",
-                "schema": {
-                    "name": {"type": "string", "required": True},
-                    "name_zh": {"type": "string", "required": True},
-                    "example_img_paths": {
-                        "type": "list",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
+                "type": "objectid",
+                "data_relation": {
+                    "resource": "annoattritem",
+                    "field": "_id",
+                    "embeddable": True,
+                },
             }
         },
         "attr_type": {"type": "string", "required": True},
+    },
+}
+
+annoattritem = {
+    "item_title": "annoattritem",
+    "resource_methods": ["GET", "POST", "DELETE"],
+    "item_methods": ["GET", "PATCH", "PUT", "DELETE"],
+    "schema": {
+        "name": {"type": "string", "required": True},
+        "name_zh": {"type": "string", "required": True},
+        "example_img_paths": {
+            "type": "list",
+            "schema": {
+                "type": "string"
+            }
+        }
     },
 }

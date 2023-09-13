@@ -39,12 +39,12 @@ def insert_attrs(annoattrs: pd.DataFrame, api_server: str):
         assert items.attr_type.nunique() == 1
         attr_name_zh, attr_type = items[["attr_name_zh", "attr_type"]].values[0]
 
-        prepared_items = prepare_attritems(name, attr_type, items)
+        attritem_ids = insert_attritems(name, attr_type, items, api_server)
         _attr = {
             "name": name,
             "name_zh": attr_name_zh,
             "attr_type": attr_type,
-            "items": prepared_items,
+            "items": attritem_ids,
         }
         attr_objid = post_docs("annoattr", [_attr], api_server)[0]
         _attr.update({"_id": attr_objid})
@@ -55,21 +55,52 @@ def insert_attrs(annoattrs: pd.DataFrame, api_server: str):
     return name2attr
 
 
-def prepare_attritems(attr_name, attr_type, items):
+def insert_attritems(attr_name: str, attr_type: str, items: pd.DataFrame, api_server: str) -> dict:
+    """Insert attriems into DB through POST method
+
+    Parameters
+    ----------
+    attr_name : str
+        attribute's name
+    attr_type : str
+        attributes's type
+    items : pd.DataFrame
+        list of items that associated to the attribute
+        schema: {
+            "name": {"type": "string", "required": True},
+            "name_zh": {"type": "string", "required": True},
+            "example_img_paths": {
+                "type": "list",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        }
+    api_server : str
+        the REST API server
+
+    Returns
+    -------
+    dict
+        a mapping dict that maps each attritem's name to AnnoItem object
+    """
     if attr_type == "enum":
-        return [
+        attritems = [
             {"name": i[0], "name_zh": i[1], "example_img_paths": [] if pd.isnull(i[2]) else i[2].split(",")}
             for i in items[["attr_value", "attr_desc", "example_img_paths"]].values.tolist()
         ]
 
     elif attr_type == "bool":
         assert len(items) == 1
-        return [
+        attritems = [
             {"name": f"{attr_name}.true", "name_zh": "是"},
             {"name": f"{attr_name}.false", "name_zh": "否"},
         ]
     else:
         raise ValueError("Unknown attribute type: {}".format(attr_type))
+    
+    attritem_ids = post_docs("annoattritem", attritems, api_server)
+    return attritem_ids
 
 
 def insert_classes(annoclasses: pd.DataFrame, name2attr: dict, api_server: str):

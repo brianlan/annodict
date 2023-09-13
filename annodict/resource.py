@@ -113,6 +113,7 @@ class AnnoScene:
             ],
         )
 
+    # TODO: needs to be modified due to the refactoring of annoitem.
     def export_html(self, path: Path) -> str:
         """Export as html string"""
         template = Template(Path("templates/scene.html").read_text())
@@ -120,6 +121,7 @@ class AnnoScene:
         with open(path, "w") as f:
             f.write(html)
 
+    # TODO: needs to be modified due to the refactoring of annoitem.
     def export_csv(self, path: Path) -> pd.DataFrame:
         """Export as csv
         -----------------

@@ -1,4 +1,4 @@
-from model import annoattr, annoclass, annoscene
+from model import annoattr, annoclass, annoscene, annoattritem
 
 
 # Let's just use the local mongod instance. Edit as needed.
@@ -34,4 +34,5 @@ DOMAIN = {
     'annoclass': annoclass,
     'annoattr': annoattr,
     'annoscene': annoscene,
+    'annoattritem': annoattritem,
 }
