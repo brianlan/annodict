@@ -18,7 +18,11 @@
             </tr>
             <tr v-for="(annoclass, annoclass_id) in sorted_class_array" :key="annoclass_id" >
                 <td>{{ '{{annoclass.category}}' }}</td>
-                <td>{{ '{{annoclass.name_zh}}' }}</td>
+                <td>
+                    {{ '{{annoclass.name_zh}}' }}
+                    <br>
+                    <font size="2">{{'{{annoclass.name}}'}}</font>
+                </td>
                 <td>{{ '{{annoclass.time_varying}}' }}</td>
                 <td>
                     <img v-for="img_path in annoclass.example_img_paths" :key="img_path" :src="img_path" width="60">
@@ -30,6 +34,8 @@
                             <tr v-for="attritem in attr.items" :key="attritem.name">
                                 <td>
                                     {{ '{{attritem.name_zh}}' }}
+                                    <br>
+                                    <font size="2">{{'{{attritem.name}}'}}</font>
                                 </td>
                                 <td>
                                     <img v-for="img_path in attritem.example_img_paths" :key="img_path" :src="img_path" width="60">

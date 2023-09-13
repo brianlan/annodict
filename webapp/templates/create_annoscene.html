@@ -31,7 +31,11 @@
             <tr v-for="selected_class in selected_classes">
                 <td><a href="#" style="text-decoration: none" @click="remove_class(selected_class._id)">✖️</a></td>
                 <td>{{ '{{selected_class.category}}' }}</td>
-                <td>{{ '{{selected_class.name_zh}}' }}</td>
+                <td>
+                    {{ '{{selected_class.name_zh}}' }}
+                    <br>
+                    <font size="2">{{'{{selected_class.name}}'}}</font>
+                </td>
                 <td>{{ '{{selected_class.time_varying}}' }}</td>
                 <td>
                     <img v-for="img_path in selected_class.example_img_paths" :key="img_path" :src="img_path" width="60">
@@ -43,6 +47,8 @@
                             <tr v-for="attritem in attr.items" :key="attritem.name">
                                 <td>
                                     {{ '{{attritem.name_zh}}' }}
+                                    <br>
+                                    <font size="2">{{'{{attritem.name}}'}}</font>
                                 </td>
                                 <td>
                                     <img v-for="img_path in attritem.example_img_paths" :key="img_path" :src="img_path" width="60">
