@@ -14,20 +14,23 @@ let annoscene_detail_table = new Vue({
         let scene_id = url_parts[url_parts.length - 1];
 
         axios.get('/annoscene/'+scene_id+'?max_results=200')
-            .then(function (response) {
+            .then(async function (response) {
                 self.scene = response.data;
-                self.scene.classes.map(function (annoclass_id) {
-                    axios.get('/annoclass/'+annoclass_id+'?embedded={"attributes":1}')
-                        .then(function (response) {
-                            self.class_array.push(response.data);
+                self.scene.classes.map(async function (annoclass_id) {
+                    let annoclass = await axios.get('/annoclass/'+annoclass_id);
+                    
+                    // fetch annoattr of annoclass.attributes (annoclass.attributes is an array of annoattr ids)
+                    let annoattr_ids = '"' + annoclass.data.attributes.join('","') + '"';
+                    let annoattr_result = await axios.get(`/annoattr?embedded={"items":1}&where={"_id": {"$in": [${annoattr_ids}]}}`);
+                    annoclass.data.attributes = annoattr_result.data._items;
 
-                            response.data.attributes.map(function (attr) {
-                                self.$set(self.show, response.data.name + "-" + attr.name, false);
-                            });
-                        })
-                        .catch(function (error) {
-                            alert(JSON.stringify(error));
-                        });
+                    self.class_array.push(annoclass.data);
+
+                    // by default, set the attributes's show state to false
+                    annoclass.data.attributes.map(function (attr) {
+                        self.$set(self.show, annoclass.data.name + "-" + attr.name, false);
+                    });
+                    
                 });
             })
             .catch(function (error) {

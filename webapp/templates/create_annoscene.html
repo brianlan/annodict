@@ -62,10 +62,10 @@
         <hr>
         <div class="row">
             <select v-model="cur_category">
-                <option v-for="category in Object.keys(categories)" :value="category">{{'{{category}}'}}</option>
+                <option v-for="category in Object.keys(full_dict)" :value="category">{{'{{category}}'}}</option>
             </select>
             <select v-model="cur_idx_in_category">
-                <option v-for="cls, idx in categories[cur_category]" :value="idx">{{'{{cls.name_zh}}'}}</option>
+                <option v-for="cls, idx in full_dict[cur_category]" :value="idx">{{'{{cls.name_zh}}'}}</option>
             </select>
             <input class="button-primary" value="增加标注类别" type="button" @click="add_class">
         </div>

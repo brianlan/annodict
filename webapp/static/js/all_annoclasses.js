@@ -1,24 +1,40 @@
 let all_annoclass_table = new Vue({
     el: '#all_annoclass_table',
     data: {
-        categories: {},
+        full_dict: {},
         show: {},
     },
     mounted: function () {
-        let self = this;
-        axios.get('/annoclass?embedded={"attributes":1}&max_results=200')
-            .then(function (response) {
-                self.categories = response.data._items.reduce((acc, x) => {
+        this.fetch_full_dict();
+    },
+    methods: {
+        fetch_full_dict: function() {
+            let self = this;
+
+            axios.get('/annoclass?embedded={"attributes":1}&max_results=200')
+            .then(async function (response) {
+                self.full_dict = await response.data._items.reduce(async (accPromise, x) => {
+                    let acc = await accPromise;
+
+                    // fetch annoattritems
+                    await Promise.all(x.attributes.map(async function(attr) {
+                        let item_ids = '"' + attr.items.join('","') + '"';
+                        let result = await axios.get(`/annoattritem?where={"_id": {"$in": [${item_ids}]}}`);
+                        attr.items = result.data._items;
+                    }));
+
                     // If the category does not exist in the accumulator object, create an empty array for it
                     if (!acc[x.category]) {
-                      acc[x.category] = [];
+                        acc[x.category] = [];
                     }
 
                     // Push the annoclass to the corresponding category array
                     acc[x.category].push(x);
+
                     // Return the updated accumulator object
                     return acc;
-                }, {});
+
+                }, Promise.resolve({}));
 
                 response.data._items.map(function (x) {
                     for (let i in x.attributes) {
@@ -29,8 +45,7 @@ let all_annoclass_table = new Vue({
             .catch(function (error) {
                 alert(JSON.stringify(error));
             });
-    },
-    methods: {
+        },
         toggle_attr: function (annoclass_name, attr_name) {
             this.$set(this.show, annoclass_name + "-" + attr_name, !this.show[annoclass_name + "-" + attr_name])
         },
@@ -38,17 +53,4 @@ let all_annoclass_table = new Vue({
             return this.show[annoclass_name + "-" + attr_name];
         }
     }
-    // methods: {
-    //     delete_job: function (idx) {
-    //         let self = this;
-    //         axios.delete('/job/' + self.jobs[idx].id)
-    //             .then(function (response){
-    //                 console.log("deleted job " + self.jobs[idx].id);
-    //                 self.jobs.splice(idx, 1);
-    //             })
-    //             .catch(function (error) {
-    //                 alert(JSON.stringify(error));
-    //             });
-    //     }
-    // }
 });

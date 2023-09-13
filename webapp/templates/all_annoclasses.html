@@ -5,7 +5,7 @@
 {% block content %}
 <div class="twelve columns">
     <div id="all_annoclass_table">
-        <div v-for="(annoclasses, category) in categories" :key="category" >
+        <div v-for="(annoclasses, category) in full_dict" :key="category" >
             <h4>{{ '{{category}}' }}</h4>
                 <table class="u-full-width">
                     <tr>
