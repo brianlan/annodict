@@ -14,12 +14,38 @@ function remove_unnecessary_keys(obj, keysToRemove) {
     return newObj;
 }
 
+function remove_unchecked_attritems(annoclass, attritem_check_state) {
+    // function that remove the unchecked attritems from annoclass
+    // `annoclass` is an object, attritem_check_state is an object
+    //             annoclass contains a field attributes which is a list of object
+    //             each attr in attributes has a field called items which is a list of object
+    // `attritem_check_state` (key-value pair, where key is _id, value is boolean)
+    // check whether item._id is true in attritem_check_state (key-value pair, where key is _id, value is boolean)
+    // remove the unchecked item from attr of annoclass
+    // return the annoclass
+    let new_annoclass = JSON.parse(JSON.stringify(annoclass));  // deep copy
+    new_annoclass.attributes = new_annoclass.attributes.map(function (attr) {
+        attr.items = attr.items.filter(function (item) {
+            return attritem_check_state[item._id];
+        });
+        return attr;
+    });
+
+    // remove attr if attr.items is empty
+    new_annoclass.attributes = new_annoclass.attributes.filter(function (attr) {
+        return attr.items.length > 0;
+    });
+    
+    return new_annoclass;
+}
+
 let new_annoscene = new Vue({
     el: '#new_annoscene',
     data: {
         scene_name: undefined,
         scene_desc: undefined,
         selected_classes: [],
+        attritem_check_state: {},
         full_dict: {},
         show: {},
         cur_category: undefined,
@@ -65,6 +91,10 @@ let new_annoscene = new Vue({
                 response.data._items.map(function (x) {
                     for (let i in x.attributes) {
                         self.$set(self.show, x.name + "-" + x.attributes[i].name, false);
+
+                        for (let j in x.attributes[i].items) {
+                            self.$set(self.attritem_check_state, x.attributes[i].items[j]._id, true);  // default set all the attritem_check_state to be true
+                        }
                     }
                 });
             })
@@ -104,9 +134,12 @@ let new_annoscene = new Vue({
                             "name": self.scene_name,
                             "desc": self.scene_desc,
                             "classes": self.selected_classes.map(function(cls){
-                                return remove_unnecessary_keys(cls, ['_created', '_updated', '_links']);
+                                return remove_unnecessary_keys(
+                                    remove_unchecked_attritems(cls, self.attritem_check_state), ['_created', '_updated', '_links']
+                                );
                             })
                         };
+
                         axios.post("/annoscene", new_scene, {headers: headers})  // call eve rest api
                             .then(function (response) {
                                 alert("成功创建标注场景");
@@ -122,10 +155,10 @@ let new_annoscene = new Vue({
                     }
                 })
         },
-        toggle_attr: function (annoclass_name, attr_name) {
+        show_attr: function (annoclass_name, attr_name) {
             this.$set(this.show, annoclass_name + "-" + attr_name, !this.show[annoclass_name + "-" + attr_name])
         },
-        toggle_state: function (annoclass_name, attr_name) {
+        attr_shown_state: function (annoclass_name, attr_name) {
             return this.show[annoclass_name + "-" + attr_name];
         }
     }

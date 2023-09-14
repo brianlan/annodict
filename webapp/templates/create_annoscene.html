@@ -42,9 +42,10 @@
                 </td>
                 <td>
                     <div v-for="attr in selected_class.attributes" :key="attr.name">
-                        <button class="button" @click="toggle_attr(selected_class.name, attr.name)">{{ '{{attr.name_zh}}' }}</button>
-                        <table v-show="toggle_state(selected_class.name, attr.name)">
+                        <button class="button" @click="show_attr(selected_class.name, attr.name)">{{ '{{attr.name_zh}}' }}</button>
+                        <table v-show="attr_shown_state(selected_class.name, attr.name)">
                             <tr v-for="attritem in attr.items" :key="attritem.name">
+                                <td><input type="checkbox" v-model="attritem_check_state[attritem._id]"></td>
                                 <td>
                                     {{ '{{attritem.name_zh}}' }}
                                     <br>
