@@ -1,3 +1,19 @@
+function remove_unnecessary_keys(obj, keysToRemove) {
+    let newObj = Array.isArray(obj) ? [] : {};
+
+    for (let key in obj) {
+        if (keysToRemove.includes(key)) {
+            continue;
+        } else if (typeof obj[key] === "object" && obj[key] !== null) {
+            newObj[key] = remove_unnecessary_keys(obj[key], keysToRemove);
+        } else {
+            newObj[key] = obj[key];
+        }
+    }
+
+    return newObj;
+}
+
 let new_annoscene = new Vue({
     el: '#new_annoscene',
     data: {
@@ -87,7 +103,9 @@ let new_annoscene = new Vue({
                         let new_scene = {
                             "name": self.scene_name,
                             "desc": self.scene_desc,
-                            "classes": self.selected_class_ids
+                            "classes": self.selected_classes.map(function(cls){
+                                return remove_unnecessary_keys(cls, ['_created', '_updated', '_links']);
+                            })
                         };
                         axios.post("/annoscene", new_scene, {headers: headers})  // call eve rest api
                             .then(function (response) {

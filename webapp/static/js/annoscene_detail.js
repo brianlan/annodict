@@ -4,8 +4,8 @@ let annoscene_detail_table = new Vue({
         scene: {
             "name": "not populated",
             "desc": "not populated",
+            "classes": [],
         },
-        class_array: [],
         show: {},
     },
     mounted: function () {
@@ -16,19 +16,19 @@ let annoscene_detail_table = new Vue({
         axios.get('/annoscene/'+scene_id+'?max_results=200')
             .then(async function (response) {
                 self.scene = response.data;
-                self.scene.classes.map(async function (annoclass_id) {
-                    let annoclass = await axios.get('/annoclass/'+annoclass_id);
+                self.scene.classes.map(async function (annoclass) {
+                    // let annoclass = await axios.get('/annoclass/'+annoclass_id);
                     
-                    // fetch annoattr of annoclass.attributes (annoclass.attributes is an array of annoattr ids)
-                    let annoattr_ids = '"' + annoclass.data.attributes.join('","') + '"';
-                    let annoattr_result = await axios.get(`/annoattr?embedded={"items":1}&where={"_id": {"$in": [${annoattr_ids}]}}`);
-                    annoclass.data.attributes = annoattr_result.data._items;
+                    // // fetch annoattr of annoclass.attributes (annoclass.attributes is an array of annoattr ids)
+                    // let annoattr_ids = '"' + annoclass.data.attributes.join('","') + '"';
+                    // let annoattr_result = await axios.get(`/annoattr?embedded={"items":1}&where={"_id": {"$in": [${annoattr_ids}]}}`);
+                    // annoclass.data.attributes = annoattr_result.data._items;
 
-                    self.class_array.push(annoclass.data);
+                    // self.class_array.push(annoclass.data);
 
                     // by default, set the attributes's show state to false
-                    annoclass.data.attributes.map(function (attr) {
-                        self.$set(self.show, annoclass.data.name + "-" + attr.name, false);
+                    annoclass.attributes.map(function (attr) {
+                        self.$set(self.show, annoclass.name + "-" + attr.name, false);
                     });
                     
                 });
@@ -39,7 +39,7 @@ let annoscene_detail_table = new Vue({
     },
     computed: {
         sorted_class_array: function () {
-            return this.class_array.sort((a, b) => {
+            return this.scene.classes.sort((a, b) => {
                 if(a.category < b.category) {
                     return -1;
                 }
