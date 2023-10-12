@@ -49,9 +49,9 @@
 </div>
 
 </body>
-<script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/2.6.14/vue.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/axios/0.26.0/axios.js"></script>
+<script src="{{ url_for('static', filename='js/lib/lf9-cdn-tos.bytecdntp.com_cdn_expire-1-M_vue_2.6.14_vue.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lib/lf26-cdn-tos.bytecdntp.com_cdn_expire-1-M_jquery_3.6.0_jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lib/lf3-cdn-tos.bytecdntp.com_cdn_expire-1-M_axios_0.26.0_axios.js') }}"></script>
 <script src="{{ url_for('static', filename='js/site.js') }}"></script>
 {% block extra_js_reference %} {% endblock %}
 </html>
