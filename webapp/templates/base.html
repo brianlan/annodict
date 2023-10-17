@@ -21,10 +21,23 @@
         <nav class="navbar">
             <div class="container">
                 <ul class="navbar-list">
-                    <li class="navbar-item"><a class="navbar-link" href="/all_annoclasses">字典</a></li>
                     <li class="navbar-item">
-                        <a class="navbar-link" href="#" data-popover="#codeNavPopover">场景</a>
-                        <div id="codeNavPopover" class="popover">
+                        <a class="navbar-link" href="#" data-popover="#dictNavPopover">字典</a>
+                        <div id="dictNavPopover" class="popover">
+                        <ul class="popover-list">
+                            <li class="popover-item">
+                            <a class="popover-link" href="/all_annoclasses">类别(Class)</a>
+                            </li>
+                            <li class="popover-item">
+                            <a class="popover-link" href="/all_annotags">标签(Tag)</a>
+                            </li>
+                        </ul>
+                        </div>
+                    </li>
+
+                    <li class="navbar-item">
+                        <a class="navbar-link" href="#" data-popover="#sceneNavPopover">场景</a>
+                        <div id="sceneNavPopover" class="popover">
                         <ul class="popover-list">
                             <li class="popover-item">
                             <a class="popover-link" href="/all_annoscenes">所有场景</a>

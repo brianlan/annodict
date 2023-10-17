@@ -44,8 +44,10 @@ let new_annoscene = new Vue({
     data: {
         scene_name: undefined,
         scene_desc: undefined,
-        selected_classes: [],
+        selected_classes_or_tags: [],
         attritem_check_state: {},
+        class_dict: {},
+        tag_dict: {},
         full_dict: {},
         show: {},
         cur_category: undefined,
@@ -56,61 +58,111 @@ let new_annoscene = new Vue({
     },
     computed: {
         selected_class_ids: function () {
-            return this.selected_classes.map(x => x._id);
+            return this.selected_classes_or_tags.map(x => x._id);
         }
     },
     methods: {
-        fetch_full_dict: function() {
+        fetch_full_dict: async function() {
             let self = this;
 
-            axios.get('/annoclass?embedded={"attributes":1}&max_results=200')
-            .then(async function (response) {
-                self.full_dict = await response.data._items.reduce(async (accPromise, x) => {
-                    let acc = await accPromise;
+            const responses = await Promise.all([
+                // Fetch annoclass
+                axios.get('/annoclass?embedded={"attributes":1}&max_results=200')
+                .then(async function (response) {
+                    self.class_dict = await response.data._items.reduce(async (accPromise, x) => {
+                        x['source'] = 'annoclass';
+                        let acc = await accPromise;
 
-                    // fetch annoattritems
-                    await Promise.all(x.attributes.map(async function(attr) {
-                        let item_ids = '"' + attr.items.join('","') + '"';
-                        let result = await axios.get(`/annoattritem?where={"_id": {"$in": [${item_ids}]}}`);
-                        attr.items = result.data._items;
-                    }));
+                        // fetch annoattritems
+                        await Promise.all(x.attributes.map(async function(attr) {
+                            let item_ids = '"' + attr.items.join('","') + '"';
+                            let result = await axios.get(`/annoattritem?where={"_id": {"$in": [${item_ids}]}}`);
+                            attr.items = result.data._items;
+                        }));
 
-                    // If the category does not exist in the accumulator object, create an empty array for it
-                    if (!acc[x.category]) {
-                        acc[x.category] = [];
-                    }
-
-                    // Push the annoclass to the corresponding category array
-                    acc[x.category].push(x);
-
-                    // Return the updated accumulator object
-                    return acc;
-
-                }, Promise.resolve({}));
-
-                response.data._items.map(function (x) {
-                    for (let i in x.attributes) {
-                        self.$set(self.show, x.name + "-" + x.attributes[i].name, false);
-
-                        for (let j in x.attributes[i].items) {
-                            self.$set(self.attritem_check_state, x.attributes[i].items[j]._id, true);  // default set all the attritem_check_state to be true
+                        // If the category does not exist in the accumulator object, create an empty array for it
+                        if (!acc[x.category]) {
+                            acc[x.category] = [];
                         }
-                    }
-                });
-            })
-            .catch(function (error) {
-                alert(JSON.stringify(error));
-            });
+
+                        // Push the annoclass to the corresponding category array
+                        acc[x.category].push(x);
+
+                        // Return the updated accumulator object
+                        return acc;
+
+                    }, Promise.resolve({}));
+
+                    response.data._items.map(function (x) {
+                        for (let i in x.attributes) {
+                            self.$set(self.show, x.name + "-" + x.attributes[i].name, false);
+
+                            for (let j in x.attributes[i].items) {
+                                self.$set(self.attritem_check_state, x.attributes[i].items[j]._id, true);  // default set all the attritem_check_state to be true
+                            }
+                        }
+                    });
+                })
+                .catch(function (error) {
+                    alert(JSON.stringify(error));
+                }),
+
+                // Fetch annotag
+                axios.get('/annotag?embedded={"attributes":1}&max_results=200')
+                .then(async function (response) {
+                    self.tag_dict = await response.data._items.reduce(async (accPromise, x) => {
+                        x['source'] = 'annotag';
+                        let acc = await accPromise;
+
+                        // fetch annoattritems
+                        await Promise.all(x.attributes.map(async function(attr) {
+                            let item_ids = '"' + attr.items.join('","') + '"';
+                            let result = await axios.get(`/annoattritem?where={"_id": {"$in": [${item_ids}]}}`);
+                            attr.items = result.data._items;
+                        }));
+
+                        // If the category does not exist in the accumulator object, create an empty array for it
+                        if (!acc[x.category]) {
+                            acc[x.category] = [];
+                        }
+
+                        // Push the annoclass to the corresponding category array
+                        acc[x.category].push(x);
+
+                        // Return the updated accumulator object
+                        return acc;
+
+                    }, Promise.resolve({}));
+
+                    response.data._items.map(function (x) {
+                        for (let i in x.attributes) {
+                            self.$set(self.show, x.name + "-" + x.attributes[i].name, false);
+
+                            for (let j in x.attributes[i].items) {
+                                self.$set(self.attritem_check_state, x.attributes[i].items[j]._id, true);  // default set all the attritem_check_state to be true
+                            }
+                        }
+                    });
+                })
+                .catch(function (error) {
+                    alert(JSON.stringify(error));
+                })
+
+            ]);
+
+            // merge class_dict and tag_dict
+            self.full_dict = {...self.class_dict, ...self.tag_dict};
+
         },
-        add_class: function (annoclass) {
+        add_class: function () {
             let self = this;
-            self.selected_classes.push(self.full_dict[self.cur_category][self.cur_idx_in_category]);
+            self.selected_classes_or_tags.push(self.full_dict[self.cur_category][self.cur_idx_in_category]);
         },
         remove_class: function (annoclass_id) {
             let self = this;
-            let index = self.selected_classes.findIndex(item => item._id === annoclass_id);
+            let index = self.selected_classes_or_tags.findIndex(item => item._id === annoclass_id);
                 if (index !== -1) {
-                self.selected_classes.splice(index, 1);
+                self.selected_classes_or_tags.splice(index, 1);
             }
         },
         create_scene: function () {
@@ -133,9 +185,14 @@ let new_annoscene = new Vue({
                         let new_scene = {
                             "name": self.scene_name,
                             "desc": self.scene_desc,
-                            "classes": self.selected_classes.map(function(cls){
+                            "classes": self.selected_classes_or_tags.filter(e => e.source === 'annoclass').map(function(cls){
                                 return remove_unnecessary_keys(
-                                    remove_unchecked_attritems(cls, self.attritem_check_state), ['_created', '_updated', '_links']
+                                    remove_unchecked_attritems(cls, self.attritem_check_state), ['_created', '_updated', '_links', 'source']
+                                );
+                            }),
+                            "tags": self.selected_classes_or_tags.filter(e => e.source === 'annotag').map(function(cls){
+                                return remove_unnecessary_keys(
+                                    remove_unchecked_attritems(cls, self.attritem_check_state), ['_created', '_updated', '_links', 'source']
                                 );
                             })
                         };

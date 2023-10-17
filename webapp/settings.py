@@ -1,4 +1,4 @@
-from model import annoattr, annoclass, annoscene, annoattritem
+from model import annoattr, annotag, annoclass, annoscene, annoattritem
 
 
 # Let's just use the local mongod instance. Edit as needed.
@@ -31,6 +31,7 @@ IF_MATCH = False
 PAGINATION_LIMIT = 1000
 
 DOMAIN = {
+    'annotag': annotag,
     'annoclass': annoclass,
     'annoattr': annoattr,
     'annoscene': annoscene,

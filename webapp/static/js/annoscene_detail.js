@@ -5,6 +5,7 @@ let annoscene_detail_table = new Vue({
             "name": "not populated",
             "desc": "not populated",
             "classes": [],
+            "tags": [],
         },
         show: {},
     },
@@ -16,19 +17,23 @@ let annoscene_detail_table = new Vue({
         axios.get('/annoscene/'+scene_id+'?max_results=200')
             .then(async function (response) {
                 self.scene = response.data;
-                self.scene.classes.map(async function (annoclass) {
-                    // let annoclass = await axios.get('/annoclass/'+annoclass_id);
-                    
-                    // // fetch annoattr of annoclass.attributes (annoclass.attributes is an array of annoattr ids)
-                    // let annoattr_ids = '"' + annoclass.data.attributes.join('","') + '"';
-                    // let annoattr_result = await axios.get(`/annoattr?embedded={"items":1}&where={"_id": {"$in": [${annoattr_ids}]}}`);
-                    // annoclass.data.attributes = annoattr_result.data._items;
 
-                    // self.class_array.push(annoclass.data);
+                // Set the toggle state of classes to false
+                self.scene.classes.map(async function (annoclass) {
 
                     // by default, set the attributes's show state to false
                     annoclass.attributes.map(function (attr) {
                         self.$set(self.show, annoclass.name + "-" + attr.name, false);
+                    });
+                    
+                });
+
+                // Set the toggle state of tags to false
+                self.scene.tags.map(async function (annotag) {
+
+                    // by default, set the attributes's show state to false
+                    annotag.attributes.map(function (attr) {
+                        self.$set(self.show, annotag.name + "-" + attr.name, false);
                     });
                     
                 });
@@ -38,8 +43,9 @@ let annoscene_detail_table = new Vue({
             });
     },
     computed: {
-        sorted_class_array: function () {
-            return this.scene.classes.sort((a, b) => {
+        sorted_class_or_tag_array: function () {
+            let classes_or_tags = this.scene.classes.concat(this.scene.tags);
+            return classes_or_tags.sort((a, b) => {
                 if(a.category < b.category) {
                     return -1;
                 }
@@ -51,11 +57,11 @@ let annoscene_detail_table = new Vue({
         }
     },
     methods: {
-        toggle_attr: function (annoclass_name, attr_name) {
-            this.$set(this.show, annoclass_name + "-" + attr_name, !this.show[annoclass_name + "-" + attr_name])
+        toggle_attr: function (class_or_tag_name, attr_name) {
+            this.$set(this.show, class_or_tag_name + "-" + attr_name, !this.show[class_or_tag_name + "-" + attr_name])
         },
-        toggle_state: function (annoclass_name, attr_name) {
-            return this.show[annoclass_name + "-" + attr_name];
+        toggle_state: function (class_or_tag_name, attr_name) {
+            return this.show[class_or_tag_name + "-" + attr_name];
         }
     }
 });

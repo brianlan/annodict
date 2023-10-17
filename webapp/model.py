@@ -5,6 +5,48 @@ annoscene = {
     "schema": {
         "name": {"type": "string", "required": True},
         "desc": {"type": "string"},
+        "tags": {
+            "type": "list",
+            "required": True,
+            "schema": {
+                "type": "dict",
+                "schema": {
+                    "_id": {"type": "string", "required": True},
+                    "name": {"type": "string", "required": True},
+                    "category": {"type": "string", "required": True},
+                    "name_zh": {"type": "string", "required": True},
+                    "example_img_paths": {"type": "list", "schema": {"type": "string"}},
+                    "attributes": {
+                        "type": "list",
+                        "schema": {
+                            "type": "dict",
+                            "schema": {
+                                "_id": {"type": "string", "required": True},
+                                "name": {"type": "string", "required": True},
+                                "name_zh": {"type": "string", "required": True},
+                                "attr_type": {"type": "string", "required": True},
+                                "items": {
+                                    "type": "list",
+                                    "required": True,
+                                    "schema": {
+                                        "type": "dict",
+                                        "schema": {
+                                            "_id": {"type": "string", "required": True},
+                                            "name": {"type": "string", "required": True},
+                                            "name_zh": {"type": "string", "required": True},
+                                            "example_img_paths": {
+                                                "type": "list",
+                                                "schema": {"type": "string"},
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    }
+                }
+            }
+        },
         "classes": {
             "type": "list",
             "required": True,
@@ -49,6 +91,35 @@ annoscene = {
             }
         }
     }
+}
+
+# can be interpreted as annoclass for an image or a whole image sequence.
+annotag = {
+    "item_title": "annotag",
+    "resource_methods": ["GET", "POST", "DELETE"],
+    "item_methods": ["GET", "PATCH", "PUT", "DELETE"],
+    "schema": {
+        "name": {"type": "string", "required": True},
+        "category": {"type": "string", "required": True},
+        "name_zh": {"type": "string", "required": True},
+        "attributes": {
+            "type": "list",
+            "schema": {
+                "type": "objectid",
+                "data_relation": {
+                    "resource": "annoattr",
+                    "field": "_id",
+                    "embeddable": True,
+                },
+            },
+        },
+        "example_img_paths": {
+            "type": "list",
+            "schema": {
+                "type": "string"
+            }
+        }
+    },
 }
 
 annoclass = {

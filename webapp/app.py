@@ -15,6 +15,11 @@ def all_annoclasses():
     return render_template('all_annoclasses.html')
 
 
+@app.route("/all_annotags", methods=["GET"])
+def all_annotags():
+    return render_template('all_annotags.html')
+
+
 @app.route("/all_annoscenes", methods=["GET"])
 def all_annoscenes():
     return render_template('all_annoscenes.html')

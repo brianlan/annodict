@@ -11,7 +11,7 @@ let all_annoscene_table = new Vue({
                     return {
                         _id: x._id,
                         name: x.name,
-                        num_classes: x.classes.length,
+                        num_classes_or_tags: x.classes.length + x.tags.length,
                         created_ts: x._created,
                     };
                 });
