@@ -25,6 +25,7 @@ let all_annoscene_table = new Vue({
         export_scene: function (scene_idx, export_type) {
             let self = this;
             let scene_id = self.scenes[scene_idx]._id;
+            let scene_name = self.scenes[scene_idx].name;
 
             axios({
                 url: `/export_scene/${scene_id}/${export_type}`,
@@ -41,7 +42,7 @@ let all_annoscene_table = new Vue({
                 // Create a temporary <a> element and trigger a download
                 const link = document.createElement('a');
                 link.href = downloadUrl;
-                link.setAttribute('download', `${scene_id}.${export_type}`); // Use the file name you want
+                link.setAttribute('download', `${scene_name}-${scene_id}.${export_type}`); // Use the file name you want
                 document.body.appendChild(link);
                 link.click();
                 
@@ -54,14 +55,6 @@ let all_annoscene_table = new Vue({
             .catch((error) => {
                 alert(JSON.stringify(error));
             });
-
-            // axios.get(`/export_scene/${scene_id}/${export_type}`)
-            //     .then(function (response) {
-            //         console.log(`Exported scene ${scene_id} as ${export_type}.`)
-            //     })
-            //     .catch(function (error) {
-            //         alert(JSON.stringify(error));
-            //     });
         },
         delete_scene: function (scene_idx) {
             let self = this;
