@@ -18,7 +18,7 @@
                 </tr>
                 <tr v-for="scene, idx in scenes" :key="scene._id" >
                     <td><a :href="'/annoscene_detail/'+scene._id">{{ '{{scene.name}}' }}</a></td>
-                    <td>{{ '{{scene.num_classes}}' }}</td>
+                    <td>{{ '{{scene.num_classes_or_tags}}' }}</td>
                     <td>{{ '{{scene.created_ts}}' }}</td>
                     <td>
                         <a href="#" style="text-decoration: none" @click="delete_scene(idx)"><i class="fa-solid fa-delete-left"></i></a>
