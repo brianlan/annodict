@@ -11,6 +11,8 @@ services:
       - mongodb
     networks:
       - default
+    environment:
+      - PYTHONPATH=/code
 
   mongodb:
     image: mongo:4.4.23

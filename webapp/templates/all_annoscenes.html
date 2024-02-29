@@ -2,6 +2,10 @@
 {% block title %} 4D标注字典 {% endblock %}
 {% block page_header %} 4D标注字典-标注场景 {% endblock %}
 
+{% block extra_css_reference %} 
+<link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
 {% block content %}
 <div class="twelve columns">
     <div id="all_annoscene_table">
@@ -17,7 +21,9 @@
                     <td>{{ '{{scene.num_classes}}' }}</td>
                     <td>{{ '{{scene.created_ts}}' }}</td>
                     <td>
-                        <a href="#" style="text-decoration: none" @click="delete_scene(idx)">✖️</a>
+                        <a href="#" style="text-decoration: none" @click="delete_scene(idx)"><i class="fa-solid fa-delete-left"></i></a>
+                        <a href="#" style="text-decoration: none" @click="export_scene(idx, 'html')"><i class="fa-brands fa-html5"></i></a>
+                        <a href="#" style="text-decoration: none" @click="export_scene(idx, 'csv')"><i class="fa-solid fa-file-csv"></i></a>
                         <!-- <a class="button" value="删除" type="button" @click="delete_scene(idx)"> -->
                     </td>
                 </tr>

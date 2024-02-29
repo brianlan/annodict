@@ -1,12 +1,14 @@
 import os
-import json
+import tempfile
+from pathlib import Path
 
-import requests
-from flask import render_template, request, make_response
+from flask import render_template, send_file
 from eve import Eve
 
-# from job_management import enqueue
+from annodict.resource import AnnoScene
 
+
+port = 5000
 app = Eve(root_path=os.path.dirname(os.path.realpath(__file__)))
 
 
@@ -40,32 +42,25 @@ def component_demo():
     return render_template('component_demo.html')
 
 
-# @app.route("/enqueue_job", methods=["POST"])
-# def enqueue_job():
-#     job = request.get_data()
-#     if job is None:
-#         return make_response("No data was post to /enqueue_job", 400)
-#     enqueue(json.loads(job.decode("utf-8")))
-#     return make_response(f"Successfully enqueued job: {job}", 200)
+@app.route('/export_scene/<scene_id>/<export_type>')
+def export_scene(scene_id, export_type):
+    scene = AnnoScene.from_objectid(scene_id, f"http://localhost:{port}")
 
-
-@app.route("/task_status", methods=["POST"])
-def task_status():
-    """this endpoint receives status info that post from different tasks."""
-    data = request.get_data()
-    print(data)
-    data = json.loads(data.decode("utf-8"))
-    headers = {"Content-Type": "application/json"}
-    resp = requests.get(f"http://127.0.0.1:5000/job/{data['job_id']}", headers=headers)
-    job = resp.json()
-    for task in job["tasks"]:
-        if task['id'] == data['task_id']:
-            task['labnew_task_ids'] = data['message']['labnew_task_ids']
-            task['status'] = data['status']
-            break
-    requests.patch(f"http://127.0.0.1:5000/job/{data['job_id']}", json={"tasks": job["tasks"]}, headers=headers)
-    return make_response(f"OK", 200)
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        temp_file_path = Path(tmpdirname) / f'{scene_id}.{export_type}'
+        if export_type == "csv":
+            scene.export_csv(temp_file_path)
+        elif export_type == "html":
+            scene.export_html(temp_file_path, template_path="../templates/scene.html")
+        else:
+            raise ValueError(f"Unknown export type: {export_type}")
+        
+        return send_file(
+            temp_file_path,
+            as_attachment=True,  # This will tell the browser to download the file.
+            download_name=temp_file_path.name  # Optional: specify the filename the user will see.
+        )
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=True, host="0.0.0.0", port=port)

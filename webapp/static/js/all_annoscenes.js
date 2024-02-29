@@ -22,6 +22,47 @@ let all_annoscene_table = new Vue({
             });
     },
     methods: {
+        export_scene: function (scene_idx, export_type) {
+            let self = this;
+            let scene_id = self.scenes[scene_idx]._id;
+
+            axios({
+                url: `/export_scene/${scene_id}/${export_type}`,
+                method: 'GET',
+                responseType: 'blob', // Important
+            })
+            .then((response) => {
+                // Create a new Blob object using the response data of the file
+                const blob = new Blob([response.data], { type: response.headers['content-type'] });
+                
+                // Create a URL for the blob object
+                const downloadUrl = window.URL.createObjectURL(blob);
+                
+                // Create a temporary <a> element and trigger a download
+                const link = document.createElement('a');
+                link.href = downloadUrl;
+                link.setAttribute('download', `${scene_id}.${export_type}`); // Use the file name you want
+                document.body.appendChild(link);
+                link.click();
+                
+                // Clean up and revoke the object URL
+                link.remove();
+                window.URL.revokeObjectURL(downloadUrl);
+    
+                console.log(`Exported scene ${scene_id} as ${export_type}.`);
+            })
+            .catch((error) => {
+                alert(JSON.stringify(error));
+            });
+
+            // axios.get(`/export_scene/${scene_id}/${export_type}`)
+            //     .then(function (response) {
+            //         console.log(`Exported scene ${scene_id} as ${export_type}.`)
+            //     })
+            //     .catch(function (error) {
+            //         alert(JSON.stringify(error));
+            //     });
+        },
         delete_scene: function (scene_idx) {
             let self = this;
             let scene_id = self.scenes[scene_idx]._id;
