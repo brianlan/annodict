@@ -45,7 +45,7 @@
                         <button class="button" @click="show_attr(selected_class.name, attr.name)">{{ '{{attr.name_zh}}' }}</button>
                         <table v-show="attr_shown_state(selected_class.name, attr.name)">
                             <tr v-for="attritem in attr.items" :key="attritem.name">
-                                <td><input type="checkbox" v-model="attritem_check_state[attritem._id]"></td>
+                                <td><input type="checkbox" v-model="attritem_check_state[selected_class.name + '-' + attritem._id]"></td>
                                 <td>
                                     {{ '{{attritem.name_zh}}' }}
                                     <br>

@@ -26,7 +26,7 @@ function remove_unchecked_attritems(annoclass, attritem_check_state) {
     let new_annoclass = JSON.parse(JSON.stringify(annoclass));  // deep copy
     new_annoclass.attributes = new_annoclass.attributes.map(function (attr) {
         attr.items = attr.items.filter(function (item) {
-            return attritem_check_state[item._id];
+            return attritem_check_state[annoclass.name + '-' + item._id];
         });
         return attr;
     });
@@ -98,7 +98,7 @@ let new_annoscene = new Vue({
                             self.$set(self.show, x.name + "-" + x.attributes[i].name, false);
 
                             for (let j in x.attributes[i].items) {
-                                self.$set(self.attritem_check_state, x.attributes[i].items[j]._id, true);  // default set all the attritem_check_state to be true
+                                self.$set(self.attritem_check_state, x.name + "-" + x.attributes[i].items[j]._id, false);  // default set all the attritem_check_state to be false
                             }
                         }
                     });
@@ -139,7 +139,7 @@ let new_annoscene = new Vue({
                             self.$set(self.show, x.name + "-" + x.attributes[i].name, false);
 
                             for (let j in x.attributes[i].items) {
-                                self.$set(self.attritem_check_state, x.attributes[i].items[j]._id, true);  // default set all the attritem_check_state to be true
+                                self.$set(self.attritem_check_state, x.name + "-" + x.attributes[i].items[j]._id, false);  // default set all the attritem_check_state to be false
                             }
                         }
                     });
