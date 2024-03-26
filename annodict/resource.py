@@ -43,6 +43,16 @@ class AnnoAttr:
             attr_type=d["attr_type"],
             items=[AnnoItem.from_dict(i) for i in d["items"]],
         )
+    
+    @staticmethod
+    def from_name(name: str, api_server: str, embedded: bool = False):
+        query_str = f'{api_server}/annoattr/?where={{"name": {name}}}'
+        if embedded:
+            query_str += "&embedded={\"items\":1}"
+        resp = requests.get(query_str)
+        if resp.status_code != 200:
+            raise ValueError(f"Failed to get annoattr with name: {name}")
+        return AnnoAttr.from_dict(resp.json())
 
 
 @dataclass
@@ -78,6 +88,15 @@ class AnnoClass:
         )
         if resp.status_code != 200:
             raise ValueError(f"Failed to get annoclass: {objid}")
+        return AnnoClass.from_dict(resp.json())
+    
+    @staticmethod
+    def from_name(name: str, api_server: str):
+        resp = requests.get(
+            f'{api_server}/annoclass/?where={{"name": {name}}}'
+        )
+        if resp.status_code != 200:
+            raise ValueError(f"Failed to get annoclass with name: {name}")
         return AnnoClass.from_dict(resp.json())
 
 
