@@ -83,7 +83,7 @@ class AnnoClass:
             name_zh=d["name_zh"],
             category=d["category"],
             time_varying=d["time_varying"],
-            attributes=[AnnoAttr.from_dict(a) if embedded else a for a in d["attributes"]],
+            attributes=[AnnoAttr.from_dict(a, embedded=embedded) if embedded else a for a in d["attributes"]],
             example_img_paths=d.get("example_img_paths", []),
         )
         return annoclass
@@ -102,14 +102,16 @@ class AnnoClass:
         return AnnoClass.from_dict(resp.json(), embedded=embedded)
     
     @staticmethod
-    def from_name(name: str, api_server: str):
+    def from_name(name: str, api_server: str, embedded: bool = False):
         query_str = f'{api_server}/annoclass/?where={{"name":"{name}"}}'
+        if embedded:
+            query_str += "&embedded={\"attributes\":1}"
         resp = requests.get(query_str)
         if resp.status_code != 200:
             raise ValueError(f"Failed to get annoclass with name: {name}")
         j = resp.json()
         assert j["_meta"]["total"] == 1, f"There should only be 1 record with class name: {name}"
-        return AnnoClass.from_dict(j["_items"][0])
+        return AnnoClass.from_dict(j["_items"][0], embedded=embedded)
 
 
 @dataclass
