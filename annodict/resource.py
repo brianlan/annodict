@@ -14,11 +14,13 @@ class AnnoItem:
     name: str
     name_zh: str
     example_img_paths: list[str] = field(default_factory=list)
+    _id: str = None
 
     @staticmethod
     def from_dict(d: dict):
         """Create AnnoItem from dict"""
         return AnnoItem(
+            _id=d["_id"],
             name=d["name"],
             name_zh=d["name_zh"],
             example_img_paths=d.get("example_img_paths", []),
@@ -33,26 +35,31 @@ class AnnoAttr:
     name_zh: str
     attr_type: str
     items: list[AnnoItem] = field(default_factory=list)
+    _id: str = None
 
     @staticmethod
-    def from_dict(d: dict):
+    def from_dict(d: dict, embedded: bool = False):
         """Create AnnoAttr from dict"""
-        return AnnoAttr(
+        annoattr = AnnoAttr(
+            _id=d["_id"],
             name=d["name"],
             name_zh=d["name_zh"],
             attr_type=d["attr_type"],
-            items=[AnnoItem.from_dict(i) for i in d["items"]],
+            items=[AnnoItem.from_dict(i) if embedded else i for i in d["items"]],
         )
+        return annoattr
     
     @staticmethod
     def from_name(name: str, api_server: str, embedded: bool = False):
-        query_str = f'{api_server}/annoattr/?where={{"name": {name}}}'
+        query_str = f'{api_server}/annoattr/?where={{"name":"{name}"}}'
         if embedded:
             query_str += "&embedded={\"items\":1}"
         resp = requests.get(query_str)
         if resp.status_code != 200:
             raise ValueError(f"Failed to get annoattr with name: {name}")
-        return AnnoAttr.from_dict(resp.json())
+        j = resp.json()
+        assert j["_meta"]["total"] == 1, f"There should only be 1 record with attr name: {name}"
+        return AnnoAttr.from_dict(j["_items"][0], embedded=embedded)
 
 
 @dataclass
@@ -65,39 +72,44 @@ class AnnoClass:
     time_varying: bool
     attributes: list[AnnoAttr] = field(default_factory=list)
     example_img_paths: list[str] = field(default_factory=list)
+    _id: str = None
 
     @staticmethod
-    def from_dict(d: dict):
+    def from_dict(d: dict, embedded: bool = False):
         """Create AnnoClass from dict"""
-        return AnnoClass(
+        annoclass = AnnoClass(
+            _id=d["_id"],
             name=d["name"],
             name_zh=d["name_zh"],
             category=d["category"],
             time_varying=d["time_varying"],
-            attributes=[AnnoAttr.from_dict(a) for a in d["attributes"]],
+            attributes=[AnnoAttr.from_dict(a) if embedded else a for a in d["attributes"]],
             example_img_paths=d.get("example_img_paths", []),
         )
+        return annoclass
 
     @staticmethod
-    def from_objectid(objid: str, api_server: str):
+    def from_objectid(objid: str, api_server: str, embedded: bool = False):
         """use requests.get to get the object from restful API:
         GET /annoclass/<objid>?embedded={"attributes":1}
         """
-        resp = requests.get(
-            f'{api_server}/annoclass/{objid}?embedded={{"attributes":1}}'
-        )
+        query_str = f'{api_server}/annoclass/{objid}'
+        if embedded:
+            query_str += "&embedded={\"attributes\":1}"
+        resp = requests.get(query_str)
         if resp.status_code != 200:
             raise ValueError(f"Failed to get annoclass: {objid}")
-        return AnnoClass.from_dict(resp.json())
+        return AnnoClass.from_dict(resp.json(), embedded=embedded)
     
     @staticmethod
     def from_name(name: str, api_server: str):
-        resp = requests.get(
-            f'{api_server}/annoclass/?where={{"name": {name}}}'
-        )
+        query_str = f'{api_server}/annoclass/?where={{"name":"{name}"}}'
+        resp = requests.get(query_str)
         if resp.status_code != 200:
             raise ValueError(f"Failed to get annoclass with name: {name}")
-        return AnnoClass.from_dict(resp.json())
+        j = resp.json()
+        assert j["_meta"]["total"] == 1, f"There should only be 1 record with class name: {name}"
+        return AnnoClass.from_dict(j["_items"][0])
 
 
 @dataclass

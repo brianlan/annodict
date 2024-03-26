@@ -1,0 +1,253 @@
+{
+    "name": "高阶泊车第一阶段",
+    "desc": "",
+    "tags": [],
+    "classes": [
+        {
+            "name": "class.vehicle.passenger_car"
+        },
+        {
+            "name": "class.vehicle.bus"
+        },
+        {
+            "name": "class.vehicle.truck"
+        },
+        {
+            "name": "class.vehicle.ambulance"
+        },
+        {
+            "name": "class.vehicle.fire_engine"
+        },
+        {
+            "name": "class.vehicle.trailer"
+        },
+        {
+            "name": "class.wheeled_push_device.toy_car"
+        },
+        {
+            "name": "class.cycle.tricycle"
+        },
+        {
+            "name": "class.cycle.motorcycle",
+            "attributes": [
+                {
+                    "name": "attr.cycle.is_with_rider"
+                }
+            ]
+        },
+        {
+            "name": "class.cycle.bicycle",
+            "attributes": [
+                {
+                    "name": "attr.cycle.is_with_rider"
+                }
+            ]
+        },
+        {
+            "name": "class.wheeled_push_device.cleaning_cart"
+        },
+        {
+            "name": "class.wheeled_push_device.stroller"
+        },
+        {
+            "name": "class.wheeled_push_device.shopping_cart"
+        },
+        {
+            "name": "class.wheeled_push_device.scooter",
+            "attributes": [
+                {
+                    "name": "attr.cycle.is_with_rider"
+                }
+            ]
+        },
+        {
+            "name": "class.pedestrian.pedestrian"
+        },
+        {
+            "name": "class.animal.animal"
+        },
+        {
+            "name": "class.traffic_facility.bollard"
+        },
+        {
+            "name": "class.traffic_facility.box",
+            "attributes": [
+                {
+                    "name": "attr.traffic_facility.box.type",
+                    "items": [
+                        "attr.traffic_facility.box.type.fire_box",
+                        "attr.traffic_facility.box.type.fire_hydrant",
+                        "attr.traffic_facility.box.type.distribution_box",
+                        "attr.traffic_facility.box.type.undefined"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "class.traffic_facility.cone"
+        },
+        {
+            "name": "class.traffic_facility.soft_barrier",
+            "attributes": [
+                {
+                    "name": "attr.traffic_facility.soft_barrier.type",
+                    "items": [
+                        "attr.traffic_facility.soft_barrier.type.no_parking",
+                        "attr.traffic_facility.soft_barrier.type.warning_triangle",
+                        "attr.traffic_facility.soft_barrier.type.crash_barrel",
+                        "attr.traffic_facility.soft_barrier.type.water_filled_barrier",
+                        "attr.traffic_facility.soft_barrier.type.undefined"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "class.traffic_facility.speed_bump"
+        },
+        {
+            "name": "class.traffic_facility.gate_barrier"
+        },
+        {
+            "name": "class.sign.traffic_sign.instruction"
+        },
+        {
+            "name": "class.sign.traffic_sign.prohibition_and_limit"
+        },
+        {
+            "name": "class.parking.indoor_column",
+            "attributes": [
+                {
+                    "name": "attr.parking.indoor_column.shape",
+                    "items": [
+                        "attr.parking.indoor_column.shape.regtangular",
+                        "attr.parking.indoor_column.shape.cylindrical",
+                        "attr.parking.indoor_column.shape.undefined"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "class.parking.parking_guide",
+            "attributes": [
+                {
+                    "name": "attr.parking.parking_guide.type",
+                    "items": [
+                        "attr.parking.parking_guide.type.zone",
+                        "attr.parking.parking_guide.type.undefined"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "class.parking.charging_infra"
+        },
+        {
+            "name": "class.parking.mall_entry"
+        },
+        {
+            "name": "class.road_marker.lane_line",
+            "attributes": [
+                {
+                    "name": "attr.road_marker.lane_line.type",
+                    "items": [
+                        "attr.road_marker.lane_line.type.regular",
+                        "attr.road_marker.lane_line.type.wide",
+                        "attr.road_marker.lane_line.type.stop_line",
+                        "attr.road_marker.lane_line.type.undefined"
+                    ]
+                },
+                {
+                    "name": "attr.common.color.single_color",
+                    "items": [
+                        "attr.common.color.single_color.yellow",
+                        "attr.common.color.single_color.white",
+                        "attr.common.color.single_color.undefined"
+                    ]
+                },
+                {
+                    "name": "attr.road_marker.lane_line.style"
+                }
+            ]
+        },
+        {
+            "name": "class.road_marker.no_parking_zone"
+        },
+        {
+            "name": "class.road_marker.crosswalk"
+        },
+        {
+            "name": "class.road_marker.gore_area"
+        },
+        {
+            "name": "class.road_marker.arrow",
+            "attributes": [
+                {
+                    "name": "attr.road_marker.arrow.type",
+                    "items": [
+                        "attr.road_marker.arrow.type.ahead",
+                        "attr.road_marker.arrow.type.left",
+                        "attr.road_marker.arrow.type.right",
+                        "attr.road_marker.arrow.type.ahead_left",
+                        "attr.road_marker.arrow.type.ahead_right",
+                        "attr.road_marker.arrow.type.ahead_left_right",
+                        "attr.road_marker.arrow.type.left_right",
+                        "attr.road_marker.arrow.type.undefined"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "class.road_marker.text"
+        },
+        {
+            "name": "class.lane.vehicle_lane"
+        },
+        {
+            "name": "class.lane.pedestrian"
+        },
+        {
+            "name": "class.road.intersection"
+        },
+        {
+            "name": "class.parking.parking_slot",
+            "attributes": [
+                {
+                    "name": "attr.parking.parking_slot.is_parkable"
+                },
+                {
+                    "name": "attr.parking.parking_slot.is_mechanical"
+                }
+            ]
+        },
+        {
+            "name": "class.parking.parking_lock"
+        },
+        {
+            "name": "class.parking.text_icon",
+            "attributes": [
+                {
+                    "name": "attr.parking.text_icon.type",
+                    "items": [
+                        "attr.parking.text_icon.type.accessible",
+                        "attr.parking.text_icon.type.undefined"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "class.parking.wheel_stopper"
+        },
+        {
+            "name": "class.road.freespace"
+        },
+        {
+            "name": "class.curb.curb"
+        },
+        {
+            "name": "class.curb.cove_joint"
+        },
+        {
+            "name": "class.nature.wall"
+        }
+    ]
+}

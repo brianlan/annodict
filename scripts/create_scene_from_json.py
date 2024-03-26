@@ -1,11 +1,14 @@
 import argparse
+import json
 from pathlib import Path
 from typing import List, Dict
+from dataclasses import asdict
 
 import requests
 from loguru import logger
 
 from annodict.resource import AnnoClass, AnnoAttr
+from annodict.restful import post_docs
 
 
 def main(args):
@@ -17,22 +20,21 @@ def main(args):
         "classes": prepare_classes_or_tags(src_scene_json["classes"], args.endpoint_url),
         "tags": prepare_classes_or_tags(src_scene_json["tags"], args.endpoint_url),
     }
+    post_docs("annoscene", [dst_scene_json], args.endpoint_url)
     a = 100
 
 
 def prepare_classes_or_tags(classes_or_tags: List[Dict], endpoint_url: str) -> List[Dict]:
     full_info = []
-    # iterate over all classes of scene json
     for cls_or_tag in classes_or_tags:
-        # fetch class info though REST API
-        obj = AnnoClass.from_name(cls_or_tag["name"], endpoint_url)
+        obj = AnnoClass.from_name(cls_or_tag["name"], endpoint_url) # fetch info through REST API
         
         if "attributes" in cls_or_tag:
             obj.attributes = prepare_attributes(cls_or_tag["attributes"], endpoint_url)
         else:
             obj.attributes = []
 
-        full_info.append(obj.as_dict())
+        full_info.append(asdict(obj))
 
     return full_info
 
@@ -40,16 +42,16 @@ def prepare_classes_or_tags(classes_or_tags: List[Dict], endpoint_url: str) -> L
 def prepare_attributes(attributes: List[Dict], endpoint_url: str) -> List[Dict]:
     full_info = []
     for attr in attributes:
-        # fetch attribute info though REST API
-        obj = AnnoAttr.from_name(attr["name"], endpoint_url, embedded=True)
-        obj.items = [i for i in obj.items if i["name"] in attr.get("items", [])]
-        full_info.append(obj.as_dict())
+        obj = AnnoAttr.from_name(attr["name"], endpoint_url, embedded=True) # fetch info through REST API
+        if "items" in attr:
+            obj.items = [i for i in obj.items if i.name in attr["items"]]
+        full_info.append(asdict(obj))
     return full_info
 
 
 def read_scene_json(path: Path):
     with open(path, "r") as f:
-        return f.read()
+        return json.load(f)
 
 
 if __name__ == "__main__":
