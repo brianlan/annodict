@@ -15,7 +15,7 @@ parser.add_argument("--api-server", default="http://localhost:5100")
 
 def main(args):
     logger.info(f"Start loading scene {args.scene_id} from {args.api_server}")
-    scene = AnnoScene.from_objectid(args.scene_id, args.api_server)
+    scene = AnnoScene.from_objectid(args.scene_id, args.api_server, embedded=True)
     logger.info(f"Scene {args.scene_id} loaded")
 
     if args.output_path.suffix == ".csv":

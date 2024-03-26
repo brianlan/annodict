@@ -121,23 +121,23 @@ class AnnoScene:
     classes: list[AnnoClass] = field(default_factory=list)
 
     @staticmethod
-    def from_objectid(objid: str, api_server: str):
+    def from_objectid(objid: str, api_server: str, embedded: bool = False):
         """use requests.get to get the object from restful API:
         GET /annoscene/<objid>
         """
         resp = requests.get(f"{api_server}/annoscene/{objid}")
         if resp.status_code != 200:
             raise ValueError(f"Failed to get annoscene: {objid}")
-        return AnnoScene.from_dict(resp.json(), api_server=api_server)
+        return AnnoScene.from_dict(resp.json(), api_server=api_server, embedded=embedded)
 
     @staticmethod
-    def from_dict(d: dict, api_server: str = None):
+    def from_dict(d: dict, api_server: str = None, embedded: bool = False):
         """Create AnnoScene from dict"""
         return AnnoScene(
             name=d["name"],
             desc=d.get("desc", ""),
             classes=[
-                AnnoClass.from_dict(c)
+                AnnoClass.from_dict(c, embedded=embedded)
                 if isinstance(c, dict)
                 else AnnoClass.from_objectid(c, api_server)
                 for c in d["classes"]
