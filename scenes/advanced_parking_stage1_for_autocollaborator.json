@@ -1,5 +1,5 @@
 {
-    "name": "高阶泊车第一阶段",
+    "name": "高阶泊车第一阶段(for标注工具)",
     "desc": "",
     "tags": [],
     "classes": [
@@ -209,12 +209,6 @@
             "name": "class.road_marker.text"
         },
         {
-            "name": "class.lane.vehicle_lane"
-        },
-        {
-            "name": "class.lane.pedestrian"
-        },
-        {
             "name": "class.road.intersection",
             "attributes" : [
                 {
@@ -260,16 +254,12 @@
             "name": "class.parking.wheel_stopper"
         },
         {
-            "name": "class.road.freespace"
-        },
-        {
-            "name": "class.curb.curb"
-        },
-        {
-            "name": "class.curb.cove_joint"
-        },
-        {
-            "name": "class.nature.wall"
+            "name": "class.misc.dont_care_region",
+            "attributes": [
+                {
+                    "name": "attr.misc.dont_care_region.type"
+                }
+            ]
         }
     ]
 }
