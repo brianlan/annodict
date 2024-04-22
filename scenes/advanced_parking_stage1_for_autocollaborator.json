@@ -4,34 +4,72 @@
     "tags": [],
     "classes": [
         {
-            "name": "class.vehicle.passenger_car"
+            "name": "class.vehicle.passenger_car",
+            "attributes": [
+                {
+                    "name": "attr.time_varying.object.state"
+                }
+            ]
         },
         {
-            "name": "class.vehicle.bus"
+            "name": "class.vehicle.bus",
+            "attributes": [
+                {
+                    "name": "attr.time_varying.object.state"
+                }
+            ]
         },
         {
-            "name": "class.vehicle.truck"
+            "name": "class.vehicle.truck",
+            "attributes": [
+                {
+                    "name": "attr.time_varying.object.state"
+                }
+            ]
         },
         {
-            "name": "class.vehicle.ambulance"
+            "name": "class.vehicle.ambulance",
+            "attributes": [
+                {
+                    "name": "attr.time_varying.object.state"
+                }
+            ]
         },
         {
-            "name": "class.vehicle.fire_engine"
+            "name": "class.vehicle.fire_engine",
+            "attributes": [
+                {
+                    "name": "attr.time_varying.object.state"
+                }
+            ]
         },
         {
-            "name": "class.vehicle.trailer"
+            "name": "class.vehicle.trailer",
+            "attributes": [
+                {
+                    "name": "attr.time_varying.object.state"
+                }
+            ]
         },
         {
             "name": "class.wheeled_push_device.toy_car"
         },
         {
-            "name": "class.cycle.tricycle"
+            "name": "class.cycle.tricycle",
+            "attributes": [
+                {
+                    "name": "attr.time_varying.object.state"
+                }
+            ]
         },
         {
             "name": "class.cycle.motorcycle",
             "attributes": [
                 {
                     "name": "attr.cycle.is_with_rider"
+                },
+                {
+                    "name": "attr.time_varying.object.state"
                 }
             ]
         },
@@ -40,31 +78,62 @@
             "attributes": [
                 {
                     "name": "attr.cycle.is_with_rider"
+                },
+                {
+                    "name": "attr.time_varying.object.state"
                 }
             ]
         },
         {
-            "name": "class.wheeled_push_device.cleaning_cart"
+            "name": "class.wheeled_push_device.cleaning_cart",
+            "attributes": [
+                {
+                    "name": "attr.time_varying.object.state"
+                }
+            ]
         },
         {
-            "name": "class.wheeled_push_device.stroller"
+            "name": "class.wheeled_push_device.stroller",
+            "attributes": [
+                {
+                    "name": "attr.time_varying.object.state"
+                }
+            ]
         },
         {
-            "name": "class.wheeled_push_device.shopping_cart"
+            "name": "class.wheeled_push_device.shopping_cart",
+            "attributes": [
+                {
+                    "name": "attr.time_varying.object.state"
+                }
+            ]
         },
         {
             "name": "class.wheeled_push_device.scooter",
             "attributes": [
                 {
                     "name": "attr.cycle.is_with_rider"
+                },
+                {
+                    "name": "attr.time_varying.object.state"
                 }
             ]
         },
         {
-            "name": "class.pedestrian.pedestrian"
+            "name": "class.pedestrian.pedestrian",
+            "attributes": [
+                {
+                    "name": "attr.time_varying.object.state"
+                }
+            ]
         },
         {
-            "name": "class.animal.animal"
+            "name": "class.animal.animal",
+            "attributes": [
+                {
+                    "name": "attr.time_varying.object.state"
+                }
+            ]
         },
         {
             "name": "class.traffic_facility.bollard"
@@ -204,6 +273,9 @@
                     ]
                 }
             ]
+        },
+        {
+            "name": "class.road_marker.arrow_heading_triangle"
         },
         {
             "name": "class.road_marker.text"
