@@ -8,6 +8,12 @@
             "attributes": [
                 {
                     "name": "attr.time_varying.object.state"
+                },
+                {
+                    "name": "attr.vehicle.is_trunk_open"
+                },
+                {
+                    "name": "attr.vehicle.is_door_open"
                 }
             ]
         },
@@ -16,6 +22,12 @@
             "attributes": [
                 {
                     "name": "attr.time_varying.object.state"
+                },
+                {
+                    "name": "attr.vehicle.is_trunk_open"
+                },
+                {
+                    "name": "attr.vehicle.is_door_open"
                 }
             ]
         },
@@ -24,6 +36,12 @@
             "attributes": [
                 {
                     "name": "attr.time_varying.object.state"
+                },
+                {
+                    "name": "attr.vehicle.is_trunk_open"
+                },
+                {
+                    "name": "attr.vehicle.is_door_open"
                 }
             ]
         },
@@ -32,6 +50,12 @@
             "attributes": [
                 {
                     "name": "attr.time_varying.object.state"
+                },
+                {
+                    "name": "attr.vehicle.is_trunk_open"
+                },
+                {
+                    "name": "attr.vehicle.is_door_open"
                 }
             ]
         },
