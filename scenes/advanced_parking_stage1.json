@@ -329,7 +329,12 @@
             ]
         },
         {
-            "name": "class.parking.wheel_stopper"
+            "name": "class.parking.wheel_stopper",
+            "attributes": [
+                {
+                    "name": "attr.parking.wheel_stopper.is_separated"
+                }
+            ]
         },
         {
             "name": "class.road.freespace"

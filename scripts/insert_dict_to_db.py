@@ -97,8 +97,8 @@ def insert_attritems(attr_name: str, attr_type: str, items: pd.DataFrame, api_se
     elif attr_type == "bool":
         assert len(items) == 1
         attritems = [
-            {"name": f"{attr_name}.true", "name_zh": "是"},
             {"name": f"{attr_name}.false", "name_zh": "否"},
+            {"name": f"{attr_name}.true", "name_zh": "是"},
         ]
     else:
         raise ValueError("Unknown attribute type: {}".format(attr_type))
