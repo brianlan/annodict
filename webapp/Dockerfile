@@ -6,5 +6,8 @@ RUN pip install -r /code/webapp/requirements.txt -i https://pypi.tuna.tsinghua.e
 
 COPY . /code/webapp
 WORKDIR /code/webapp
-CMD python app.py
-#CMD tail -f /dev/null
+
+# CMD tail -f /dev/null
+
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+# CMD python app.py

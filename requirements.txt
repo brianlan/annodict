@@ -2,4 +2,5 @@ jinja2==3.1.2
 eve==2.1.0
 pandas==1.5.3
 penpyxl==3.0.10
+gunicorn
 loguru
