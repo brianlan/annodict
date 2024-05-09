@@ -346,7 +346,9 @@
                 {
                     "name": "attr.parking.text_icon.type",
                     "items": [
+                        "attr.parking.text_icon.type.number",
                         "attr.parking.text_icon.type.accessible",
+                        "attr.parking.text_icon.type.time",
                         "attr.parking.text_icon.type.undefined"
                     ]
                 }
