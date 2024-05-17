@@ -7,9 +7,6 @@
             "name": "class.vehicle.passenger_car",
             "attributes": [
                 {
-                    "name": "attr.time_varying.object.state"
-                },
-                {
                     "name": "attr.vehicle.is_trunk_open"
                 },
                 {
@@ -20,9 +17,6 @@
         {
             "name": "class.vehicle.bus",
             "attributes": [
-                {
-                    "name": "attr.time_varying.object.state"
-                },
                 {
                     "name": "attr.vehicle.is_trunk_open"
                 },
@@ -35,9 +29,6 @@
             "name": "class.vehicle.truck",
             "attributes": [
                 {
-                    "name": "attr.time_varying.object.state"
-                },
-                {
                     "name": "attr.vehicle.is_trunk_open"
                 },
                 {
@@ -49,9 +40,6 @@
             "name": "class.vehicle.ambulance",
             "attributes": [
                 {
-                    "name": "attr.time_varying.object.state"
-                },
-                {
                     "name": "attr.vehicle.is_trunk_open"
                 },
                 {
@@ -60,40 +48,22 @@
             ]
         },
         {
-            "name": "class.vehicle.fire_engine",
-            "attributes": [
-                {
-                    "name": "attr.time_varying.object.state"
-                }
-            ]
+            "name": "class.vehicle.fire_engine"
         },
         {
-            "name": "class.vehicle.trailer",
-            "attributes": [
-                {
-                    "name": "attr.time_varying.object.state"
-                }
-            ]
+            "name": "class.vehicle.trailer"
         },
         {
             "name": "class.wheeled_push_device.toy_car"
         },
         {
-            "name": "class.cycle.tricycle",
-            "attributes": [
-                {
-                    "name": "attr.time_varying.object.state"
-                }
-            ]
+            "name": "class.cycle.tricycle"
         },
         {
             "name": "class.cycle.motorcycle",
             "attributes": [
                 {
                     "name": "attr.cycle.is_with_rider"
-                },
-                {
-                    "name": "attr.time_varying.object.state"
                 }
             ]
         },
@@ -102,62 +72,31 @@
             "attributes": [
                 {
                     "name": "attr.cycle.is_with_rider"
-                },
-                {
-                    "name": "attr.time_varying.object.state"
                 }
             ]
         },
         {
-            "name": "class.wheeled_push_device.cleaning_cart",
-            "attributes": [
-                {
-                    "name": "attr.time_varying.object.state"
-                }
-            ]
+            "name": "class.wheeled_push_device.cleaning_cart"
         },
         {
-            "name": "class.wheeled_push_device.stroller",
-            "attributes": [
-                {
-                    "name": "attr.time_varying.object.state"
-                }
-            ]
+            "name": "class.wheeled_push_device.stroller"
         },
         {
-            "name": "class.wheeled_push_device.shopping_cart",
-            "attributes": [
-                {
-                    "name": "attr.time_varying.object.state"
-                }
-            ]
+            "name": "class.wheeled_push_device.shopping_cart"
         },
         {
             "name": "class.wheeled_push_device.scooter",
             "attributes": [
                 {
                     "name": "attr.cycle.is_with_rider"
-                },
-                {
-                    "name": "attr.time_varying.object.state"
                 }
             ]
         },
         {
-            "name": "class.pedestrian.pedestrian",
-            "attributes": [
-                {
-                    "name": "attr.time_varying.object.state"
-                }
-            ]
+            "name": "class.pedestrian.pedestrian"
         },
         {
-            "name": "class.animal.animal",
-            "attributes": [
-                {
-                    "name": "attr.time_varying.object.state"
-                }
-            ]
+            "name": "class.animal.animal"
         },
         {
             "name": "class.traffic_facility.bollard"
@@ -207,7 +146,12 @@
             "name": "class.traffic_facility.speed_bump"
         },
         {
-            "name": "class.traffic_facility.gate_barrier"
+            "name": "class.traffic_facility.gate_barrier",
+            "attributes": [
+                {
+                    "name": "attr.traffic_facility.gate_barrier.state"
+                }
+            ]
         },
         {
             "name": "class.sign.traffic_sign.instruction"
