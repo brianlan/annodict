@@ -54,6 +54,12 @@
             "name": "class.vehicle.trailer"
         },
         {
+            "name": "class.vehicle.construction"
+        },
+        {
+            "name": "class.vehicle.env_pretect"
+        },
+        {
             "name": "class.wheeled_push_device.toy_car"
         },
         {
