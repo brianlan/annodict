@@ -6,7 +6,7 @@ from flask import render_template, send_file
 from eve import Eve
 
 
-port = 5000
+port = 5100
 app = Eve(root_path=os.path.dirname(os.path.realpath(__file__)))
 
 

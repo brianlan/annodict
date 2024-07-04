@@ -3,7 +3,7 @@ services:
   web:
     build: webapp
     ports:
-      - 5100:5000
+      - 5100:5100
     volumes:
       - .:/code  # mount source folder to docker container to enable service instant change if there's code change
       - logvolume01:/var/log
