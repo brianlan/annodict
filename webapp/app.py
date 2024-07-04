@@ -5,8 +5,6 @@ from pathlib import Path
 from flask import render_template, send_file
 from eve import Eve
 
-from annodict.resource import AnnoScene
-
 
 port = 5000
 app = Eve(root_path=os.path.dirname(os.path.realpath(__file__)))
@@ -44,6 +42,7 @@ def component_demo():
 
 @app.route('/export_scene/<scene_id>/<export_type>')
 def export_scene(scene_id, export_type):
+    from annodict.resource import AnnoScene
     scene = AnnoScene.from_objectid(scene_id, f"http://localhost:{port}")
 
     with tempfile.TemporaryDirectory() as tmpdirname:

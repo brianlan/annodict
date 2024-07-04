@@ -36,7 +36,11 @@
                         {% for attr in annoclass.attributes %}
                         <table>
                             <tr>
-                                <th>{{attr.name_zh}}</th>
+                                <th>
+                                    {{attr.name_zh}}
+                                    <br>
+                                    <font size="2">{{attr.name}}</font>
+                                </th>
                                 <th></th>
                             </tr>
                             {% for attritem in attr.items %}
