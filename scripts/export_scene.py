@@ -4,7 +4,7 @@ from pathlib import Path
 from loguru import logger
 
 from annodict.resource import AnnoScene
-from submodules.lanutils.fs.fs import parent_ensured_path
+from copious.io.fs import parent_ensured_path
 
 
 parser = argparse.ArgumentParser()
