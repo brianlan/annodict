@@ -68,6 +68,9 @@
             "name": "class.wheeled_push_device.toy_car"
         },
         {
+            "name": "class.wheeled_push_device.street_vendor"
+        },
+        {
             "name": "class.cycle.tricycle"
         },
         {
